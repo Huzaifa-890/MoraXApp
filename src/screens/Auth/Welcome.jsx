@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import colors from '../../assessts/Colors/Colors';
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Welcome = () => {
   return (
@@ -33,7 +33,7 @@ const Welcome = () => {
         {/* Get Started Button */}
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Get Started!</Text>
-          <Icon name="arrow-right" size={20} color="#fff" style={styles.icon} />
+          <Icon name="long-arrow-right" size={20} color="#fff" style={styles.icon} />
         </TouchableOpacity>
       </View>
     </ImageBackground>
@@ -67,24 +67,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FF7F3F',
-    paddingVertical: 15,
+    paddingVertical: 18,
     paddingHorizontal: 70,
     borderRadius: 10,
     elevation: 10,
     shadowColor: '#FF7F3F',
-    shadowOffset: { width: 20, height: 5 },
+    shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.5,
     marginTop: 100,
   },
   buttonText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '600',
     marginRight: 10,
   },
   icon: {
-    marginLeft: 20,
-    fontSize: 24,
+    marginLeft: 10, // Space between text and icon
+    fontSize:20,
   },
 });
 
