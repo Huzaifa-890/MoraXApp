@@ -1,12 +1,91 @@
-import { View, Text } from 'react-native';
 import React from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import colors from '../../assessts/Colors/Colors';
+import Icon from 'react-native-vector-icons/Feather';
 
 const Welcome = () => {
   return (
-    <View>
-      <Text>Welcome Screen</Text>
-    </View>
+    <ImageBackground 
+      source={require('../../assessts/Welcomebg.png')} // Background image path
+      style={styles.backgroundImage}
+    >
+      <View style={styles.container}>
+        {/* Welcome Text */}
+        <Animatable.Text 
+          animation="fadeInDown" 
+          duration={1500} 
+          style={styles.welcomeText}
+        >
+          Welcome To Mora
+        </Animatable.Text>
+
+        {/* Animated Coin */}
+        <Animatable.Image 
+          animation="bounceIn"
+          delay={500}
+          duration={2000}
+          source={require('../../assessts/MoraLOgo.png')} // Coin image path
+          style={styles.coinImage}
+          resizeMode="contain"
+        />
+
+        {/* Get Started Button */}
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Get Started!</Text>
+          <Icon name="arrow-right" size={20} color="#fff" style={styles.icon} />
+        </TouchableOpacity>
+      </View>
+    </ImageBackground>
   );
 };
+
+const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    backgroundColor: colors.PrimaryColor,
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  welcomeText: {
+    color: '#FFB830',
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 70,
+  },
+  coinImage: {
+    width: 350,
+    height: 350,
+  },
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FF7F3F',
+    paddingVertical: 15,
+    paddingHorizontal: 70,
+    borderRadius: 10,
+    elevation: 10,
+    shadowColor: '#FF7F3F',
+    shadowOffset: { width: 20, height: 5 },
+    shadowOpacity: 0.5,
+    marginTop: 100,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
+    marginRight: 10,
+  },
+  icon: {
+    marginLeft: 20,
+    fontSize: 24,
+  },
+});
 
 export default Welcome;
