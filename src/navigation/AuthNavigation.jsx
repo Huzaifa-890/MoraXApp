@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import Logo from "../screens/Auth/Logo";
 import Welcome from "../screens/Auth/Welcome";
 import Login from "../screens/Auth/Login";
+import Otp from "../screens/Auth/Otp";
 
 
 const AuthNavigation = (props) => {
@@ -37,6 +38,11 @@ const AuthNavigation = (props) => {
                     name="Login"
                     component={Login}
                     options={{ title: "Login" }}
+                />
+                <Stack.Screen
+                    name="Otp"
+                    component={Otp}
+                    options={{ title: "Otp" }}
                 />
 
             </Stack.Navigator>

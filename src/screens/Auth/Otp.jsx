@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import colors from '../../assessts/Colors/Colors';
 
-const Login = ({ navigation }) => {
+const Otp = ({ navigation }) => {
   const [isSelected, setSelection] = useState(false);
 
   // Animation references
@@ -98,7 +98,7 @@ const Login = ({ navigation }) => {
           </View>
 
           {/* Signup Button */}
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Otp')}>
+          <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Sign up</Text>
           </TouchableOpacity>
 
@@ -206,4 +206,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default Otp;
