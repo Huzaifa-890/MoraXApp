@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Logo from "../screens/Auth/Logo";
 import Welcome from "../screens/Auth/Welcome";
+import Login from "../screens/Auth/Login";
 
 
 const AuthNavigation = (props) => {
@@ -31,6 +32,11 @@ const AuthNavigation = (props) => {
                     name="Welcome"
                     component={Welcome}
                     options={{ title: "Welcome" }}
+                />
+                <Stack.Screen
+                    name="Login"
+                    component={Login}
+                    options={{ title: "Login" }}
                 />
 
             </Stack.Navigator>
