@@ -117,7 +117,7 @@ const Otp = ({ navigation }) => {
         {otpExpired ? (
           <TouchableOpacity onPress={handleResendOtp}>
           <Text style={styles.resend}>
-          <Text style={styles.normalText}>Do not send OTP </Text>
+          <Text style={styles.normalText}>Do not send OTP ? </Text>
           <Text style={styles.resendText}>Resend OTP</Text>
         </Text>
           </TouchableOpacity>
@@ -184,7 +184,6 @@ title: {
     textAlign: "center",
     fontSize: 18,
     color: "#fff",
-    backgroundColor: "#1a1a2e",
     borderRadius: 8,
   },
   timer: {
