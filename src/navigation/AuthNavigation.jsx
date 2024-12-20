@@ -3,8 +3,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Logo from "../screens/Auth/Logo";
 import Welcome from "../screens/Auth/Welcome";
-import Login from "../screens/Auth/Login";
+import CreatAccount from "../screens/Auth/CreatAccount";
 import Otp from "../screens/Auth/Otp";
+import Login from "../screens/Auth/Login";
 
 
 const AuthNavigation = (props) => {
@@ -35,14 +36,19 @@ const AuthNavigation = (props) => {
                     options={{ title: "Welcome" }}
                 />
                 <Stack.Screen
-                    name="Login"
-                    component={Login}
-                    options={{ title: "Login" }}
+                    name="CreatAccount"
+                    component={CreatAccount}
+                    options={{ title: "CreatAccount" }}
                 />
                 <Stack.Screen
                     name="Otp"
                     component={Otp}
                     options={{ title: "Otp" }}
+                />
+                <Stack.Screen
+                    name="Login"
+                    component={Login}
+                    options={{ title: "Login" }}
                 />
 
             </Stack.Navigator>

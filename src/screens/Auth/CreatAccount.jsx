@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import colors from '../../assessts/Colors/Colors';
 
-const Login = ({ navigation }) => {
+const CreatAccount = ({ navigation }) => {
   const [isSelected, setSelection] = useState(false);
 
   // Animation references
@@ -62,7 +62,7 @@ const Login = ({ navigation }) => {
         />
 
         {/* Title */}
-        <Text style={styles.title}>Login</Text>
+        <Text style={styles.title}>Create Account</Text>
 
         {/* Form with zoom animation */}
         <Animated.View style={[styles.form, { transform: [{ scale: scaleAnim }] }]}>
@@ -77,19 +77,35 @@ const Login = ({ navigation }) => {
             placeholderTextColor="#555"
             keyboardType="email-address"
           />
-         
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            placeholderTextColor="#555"
+            secureTextEntry={true}
+          />
+
           {/* Checkbox */}
-        
+          <View style={styles.checkboxContainer}>
+            <TouchableOpacity
+              style={styles.checkbox}
+              onPress={() => setSelection(!isSelected)}
+            >
+              {isSelected && <View style={styles.checkboxTick} />}
+            </TouchableOpacity>
+            <Text style={styles.checkboxText}>
+              Yes I accept all terms, conditions, and policies
+            </Text>
+          </View>
 
           {/* Signup Button */}
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('home')}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Otp')}>
             <Text style={styles.buttonText}>Sign up</Text>
           </TouchableOpacity>
 
           {/* Login Text */}
           <View style={styles.loginContainer}>
             <Text style={styles.loginText}>Already have an account?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('home')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
               <Text style={styles.loginLink}> Login</Text>
             </TouchableOpacity>
           </View>
@@ -190,4 +206,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default CreatAccount;
