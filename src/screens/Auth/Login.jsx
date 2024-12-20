@@ -1,96 +1,95 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Image,
   ImageBackground,
   Animated,
-} from 'react-native';
-import colors from '../../assessts/Colors/Colors';
+} from "react-native";
+import colors from "../../assessts/Colors/Colors";
 
 const Login = ({ navigation }) => {
-  const [isSelected, setSelection] = useState(false);
-
-  // Animation references
-  const fadeAnim = useRef(new Animated.Value(0)).current; // Initial opacity: 0
-  const slideAnim = useRef(new Animated.Value(-200)).current; // Initial position: -200 (above the screen)
-  const scaleAnim = useRef(new Animated.Value(0.8)).current; // Initial scale: 0.8
+  const fadeAnim = useRef(new Animated.Value(0)).current; // Initial opacity
+  const slideAnim = useRef(new Animated.Value(-200)).current; // Initial position
+  const scaleAnim = useRef(new Animated.Value(0.8)).current; // Initial scale
 
   useEffect(() => {
     Animated.sequence([
-      // Slide-in animation for the logo from the top
       Animated.timing(slideAnim, {
-        toValue: 0, // Final position: 0 (original position)
+        toValue: 0,
         duration: 1000,
         useNativeDriver: true,
       }),
-      // Fade-in animation for the logo
       Animated.timing(fadeAnim, {
-        toValue: 1, // Fully visible
+        toValue: 1,
         duration: 1000,
         useNativeDriver: true,
       }),
-      // Scale animation for the form
       Animated.spring(scaleAnim, {
-        toValue: 1, // Original size
+        toValue: 1,
         friction: 5,
         useNativeDriver: true,
       }),
     ]).start();
-  }, [fadeAnim, slideAnim, scaleAnim]);
+  }, []);
 
   return (
     <ImageBackground
-      source={require('../../assessts/Morabg.png')} // Replace with your background image path
+      source={require("../../assessts/Morabg.png")}
       style={styles.container}
       resizeMode="cover"
     >
       <View style={styles.innerContainer}>
-        {/* Logo with slide and fade animation */}
+        {/* Animated Logo */}
         <Animated.Image
-          source={require('../../assessts/MoraLOgo.png')} // Replace with your logo image path
+          source={require("../../assessts/MoraLOgo.png")}
           style={[
             styles.logo,
             {
               opacity: fadeAnim,
-              transform: [{ translateY: slideAnim }], // Apply slide animation
+              transform: [{ translateY: slideAnim }],
             },
           ]}
         />
 
-        {/* Title */}
+        {/* Login Title */}
         <Text style={styles.title}>Login</Text>
 
-        {/* Form with zoom animation */}
+        {/* Form with Zoom Animation */}
         <Animated.View style={[styles.form, { transform: [{ scale: scaleAnim }] }]}>
           <TextInput
             style={styles.input}
-            placeholder="Enter Your Name"
-            placeholderTextColor="#555"
+            placeholder="Enter your Email / Phone"
+            placeholderTextColor="#AAAAAA"
+            keyboardType="email-address"
           />
           <TextInput
             style={styles.input}
-            placeholder="Enter Your Email"
-            placeholderTextColor="#555"
-            keyboardType="email-address"
+            placeholder="Password"
+            placeholderTextColor="#AAAAAA"
+            secureTextEntry={true}
           />
-         
-          {/* Checkbox */}
-        
 
-          {/* Signup Button */}
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('home')}>
-            <Text style={styles.buttonText}>Sign up</Text>
+          {/* Forgot Password */}
+          <TouchableOpacity onPress={() => console.log("Forgot Password Pressed")}>
+            <Text style={styles.forgotPassword}>Forgot Password</Text>
           </TouchableOpacity>
 
-          {/* Login Text */}
-          <View style={styles.loginContainer}>
-            <Text style={styles.loginText}>Already have an account?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('home')}>
-              <Text style={styles.loginLink}> Login</Text>
+          {/* Login Button */}
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("home")}
+          >
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+
+          {/* Signup Section */}
+          <View style={styles.signupContainer}>
+            <Text style={styles.signupText}>Do you have an account?</Text>
+            <TouchableOpacity onPress={() => navigation.navigate("CreatAccount")}>
+              <Text style={styles.signupLink}> Sign up</Text>
             </TouchableOpacity>
           </View>
         </Animated.View>
@@ -102,91 +101,67 @@ const Login = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     backgroundColor: colors.PrimaryColor,
   },
   innerContainer: {
-    alignItems: 'center',
-    paddingHorizontal: 40,
-    marginVertical: 10,
+    alignItems: "center",
+    paddingHorizontal: 20,
   },
   logo: {
     width: 250,
     height: 250,
     marginBottom: 10,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   title: {
     fontSize: 32,
-    fontWeight: 'normal',
+    fontWeight: "bold",
     color: colors.button,
-    marginTop: 15,
+    marginBottom: 20,
   },
   form: {
-    width: '100%',
-    marginTop: 50,
+    width: "100%",
+    padding: 20,
+    borderRadius: 10,
+    gap: 10,
   },
   input: {
-    backgroundColor: '#FFF',
-    color: '#000',
-    borderRadius: 10,
+    backgroundColor: "#FFF",
+    color: "#000",
+    borderRadius: 8,
     padding: 15,
     marginBottom: 15,
     fontSize: 16,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 2,
   },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  checkbox: {
-    width: 20,
-    height: 20,
-    borderWidth: 1,
-    borderColor: '#FF7F3F',
-    borderRadius: 5,
-    marginRight: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  checkboxTick: {
-    width: 14,
-    height: 14,
-    backgroundColor: '#FF7F3F',
-  },
-  checkboxText: {
-    color: '#FFF',
-    fontSize: 14,
+  forgotPassword: {
+    alignSelf: "flex-end",
+    color: "#AAAAAA",
+    fontSize: 16,
+    marginBottom: 10,
   },
   button: {
-    backgroundColor: '#FF7F3F',
+    backgroundColor: "#FF9C50",
     paddingVertical: 15,
     borderRadius: 50,
-    alignItems: 'center',
-    marginBottom: 20,
+    alignItems: "center",
+   
   },
   buttonText: {
-    color: '#FFF',
-    fontSize: 20,
-    fontWeight: 'normal normal',
+    color: "#FFF",
+    fontSize: 18,
+    fontWeight: "bold",
   },
-  loginContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+  
+  signupText: {
+    color: "#FFF",
+    fontSize: 16,
   },
-  loginText: {
-    color: '#FFF',
-    fontSize: 14,
-  },
-  loginLink: {
-    color: '#FF7F3F',
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginLeft: 5,
+  signupLink: {
+    color: "#FF9C50",
+    fontSize: 16,
+    fontWeight: "bold",
+    textDecorationLine: "underline",
   },
 });
 
