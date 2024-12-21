@@ -44,7 +44,7 @@ const CreatAccount = ({ navigation }) => {
 
   return (
     <ImageBackground
-      source={require('../../assessts/Morabg.png')} // Replace with your background image path
+      source={require('../../assessts/Otpbg.png')} // Replace with your background image path
       style={styles.container}
       resizeMode="cover"
     >

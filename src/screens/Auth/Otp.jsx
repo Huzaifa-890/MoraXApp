@@ -33,20 +33,28 @@ const Otp = ({navigation}) => {
   const handleResendOtp = () => {
     setTimer(15); // Reset the timer to 15 seconds
     setOtpExpired(false); // Remove OTP expired message
-    setOtp(['', '', '', '']); // Clear OTP fields
+    setOtp(['', '', '', '', '']); // Clear OTP fields
     setErrorMessage(''); // Clear error message
-    // Add logic for resending OTP (e.g., API call)
     console.log('OTP Resent!');
   };
 
   const handleOtpChange = (text, index) => {
     const newOtp = [...otp];
-    newOtp[index] = text;
-    setOtp(newOtp);
 
-    // Automatically focus the next input
-    if (text && index < otp.length - 1) {
-      inputRefs.current[index + 1].focus();
+    if (text === '') {
+      newOtp[index] = '';
+      setOtp(newOtp);
+
+      if (index > 0) {
+        inputRefs.current[index - 1].focus();
+      }
+    } else {
+      newOtp[index] = text;
+      setOtp(newOtp);
+
+      if (index < otp.length - 1) {
+        inputRefs.current[index + 1].focus();
+      }
     }
   };
 
@@ -60,8 +68,8 @@ const Otp = ({navigation}) => {
 
     if (enteredOtp === correctOtp) {
       console.log('OTP Verified Successfully!');
-      setOtp(['', '', '', '']); // Clear OTP fields
-      navigation.navigate('Login'); // Replace 'NextScreen' with your target screen name
+      setOtp(['', '', '', '', '']);
+      navigation.navigate('OtpVerification');
     } else {
       setErrorMessage('Invalid OTP. Please try again.');
     }
@@ -70,16 +78,15 @@ const Otp = ({navigation}) => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require('../../assessts/Morabg.png')} // Replace with your background image path
+        source={require('../../assessts/Otpbg.png')}
         style={styles.container}
         resizeMode="cover">
         <View style={styles.LogoContainer}>
           <Image
             source={require('../../assessts/MoraLOgo.png')}
-            style={styles.Logo} // Replace with your logo image path
+            style={styles.Logo}
           />
 
-          {/* Title */}
           <Text style={styles.title}>Verify your Email</Text>
         </View>
 
@@ -99,6 +106,11 @@ const Otp = ({navigation}) => {
               value={digit}
               onChangeText={text => handleOtpChange(text, index)}
               ref={ref => (inputRefs.current[index] = ref)}
+              onKeyPress={({nativeEvent}) => {
+                if (nativeEvent.key === 'Backspace' && digit === '') {
+                  handleOtpChange('', index);
+                }
+              }}
             />
           ))}
         </View>
@@ -110,11 +122,9 @@ const Otp = ({navigation}) => {
 
         {/* Timer and Resend */}
         {otpExpired ? (
-          <TouchableOpacity onPress={handleResendOtp}>
-            <Text style={styles.resend}>
-              <Text style={styles.normalText}>Do not send OTP ? </Text>
-              <Text style={styles.resendText}>Resend OTP</Text>
-            </Text>
+          <TouchableOpacity onPress={handleResendOtp} style={styles.resend}>
+            <Text style={styles.normalText}>Didn’t receive OTP? </Text>
+            <Text style={styles.resendText}>Resend OTP</Text>
           </TouchableOpacity>
         ) : (
           <Text style={styles.timer}>
@@ -143,14 +153,8 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'normal',
     color: colors.button,
-    marginTop: 15,
+    marginTop: 55,
     textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#f9a826',
-    marginBottom: 10,
   },
   description: {
     fontSize: 18,
@@ -180,6 +184,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#fff',
     borderRadius: 8,
+    margin: 10,
   },
   timer: {
     color: '#fff',
@@ -189,11 +194,6 @@ const styles = StyleSheet.create({
   errorMessage: {
     color: 'red',
     fontSize: 14,
-    marginBottom: 20,
-  },
-  resend: {
-    color: '#f9a826',
-    fontWeight: 'bold',
     marginBottom: 20,
   },
   submitButton: {
@@ -207,31 +207,27 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-
-  LogoContainer: {
-    textAlign: 'center',
-    marginBottom: 30,
+  resend: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+    padding: 10,
   },
-
+  resendText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#FF7F3F',
+    textDecorationLine: 'underline',
+  },
+  normalText: {
+    fontSize: 16,
+    color: '#fff',
+  },
   Logo: {
     width: 250,
     height: 250,
-    marginBottom: 10,
     resizeMode: 'contain',
-  },
-
-  resend: {
-    fontSize: 16,
-    marginBottom: 10,
-    // You can add other common styles here if needed
-  },
-  normalText: {
-    color: '#fff', // Color for the "Do not send OTP" part
-    fontWeight: 'normal',
-  },
-  resendText: {
-    color: '#f9a826', // Color for the "Resend OTP" part
-    fontWeight: 'bold',
   },
 });
 
