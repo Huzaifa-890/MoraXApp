@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -7,10 +7,13 @@ import {
   StyleSheet,
   ImageBackground,
   Animated,
-} from "react-native";
-import colors from "../../assessts/Colors/Colors";
+} from 'react-native';
+import colors from '../../assessts/Colors/Colors';
+import {useUser} from '../../context/UserContext';
 
-const Login = ({ navigation }) => {
+const Login = ({navigation}) => {
+  const {setIsLogin} = useUser();
+
   const fadeAnim = useRef(new Animated.Value(0)).current; // Initial opacity
   const slideAnim = useRef(new Animated.Value(-200)).current; // Initial position
   const scaleAnim = useRef(new Animated.Value(0.8)).current; // Initial scale
@@ -37,19 +40,18 @@ const Login = ({ navigation }) => {
 
   return (
     <ImageBackground
-      source={require("../../assessts/Morabg.png")}
+      source={require('../../assessts/Morabg.png')}
       style={styles.container}
-      resizeMode="cover"
-    >
+      resizeMode="cover">
       <View style={styles.innerContainer}>
         {/* Animated Logo */}
         <Animated.Image
-          source={require("../../assessts/MoraLOgo.png")}
+          source={require('../../assessts/MoraLOgo.png')}
           style={[
             styles.logo,
             {
               opacity: fadeAnim,
-              transform: [{ translateY: slideAnim }],
+              transform: [{translateY: slideAnim}],
             },
           ]}
         />
@@ -58,7 +60,7 @@ const Login = ({ navigation }) => {
         <Text style={styles.title}>Login</Text>
 
         {/* Form with Zoom Animation */}
-        <Animated.View style={[styles.form, { transform: [{ scale: scaleAnim }] }]}>
+        <Animated.View style={[styles.form, {transform: [{scale: scaleAnim}]}]}>
           <TextInput
             style={styles.input}
             placeholder="Enter your Email / Phone"
@@ -73,22 +75,23 @@ const Login = ({ navigation }) => {
           />
 
           {/* Forgot Password */}
-          <TouchableOpacity onPress={() => console.log("Forgot Password Pressed")}>
+          <TouchableOpacity
+            onPress={() => console.log('Forgot Password Pressed')}>
             <Text style={styles.forgotPassword}>Forgot Password</Text>
           </TouchableOpacity>
 
           {/* Login Button */}
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate("home")}
-          >
+            onPress={() => setIsLogin(true)}>
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
 
           {/* Signup Section */}
           <View style={styles.signupContainer}>
             <Text style={styles.signupText}>Do you have an account?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate("CreatAccount")}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('CreatAccount')}>
               <Text style={styles.signupLink}> Sign up</Text>
             </TouchableOpacity>
           </View>
@@ -101,67 +104,66 @@ const Login = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     backgroundColor: colors.PrimaryColor,
   },
   innerContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     paddingHorizontal: 20,
   },
   logo: {
     width: 250,
     height: 250,
     marginBottom: 10,
-    resizeMode: "contain",
+    resizeMode: 'contain',
   },
   title: {
     fontSize: 32,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.button,
     marginBottom: 20,
   },
   form: {
-    width: "100%",
+    width: '100%',
     padding: 20,
     borderRadius: 10,
     gap: 10,
   },
   input: {
-    backgroundColor: "#FFF",
-    color: "#000",
+    backgroundColor: '#FFF',
+    color: '#000',
     borderRadius: 8,
     padding: 15,
     marginBottom: 15,
     fontSize: 16,
   },
   forgotPassword: {
-    alignSelf: "flex-end",
-    color: "#AAAAAA",
+    alignSelf: 'flex-end',
+    color: '#AAAAAA',
     fontSize: 16,
     marginBottom: 10,
   },
   button: {
-    backgroundColor: "#FF9C50",
+    backgroundColor: '#FF9C50',
     paddingVertical: 15,
     borderRadius: 50,
-    alignItems: "center",
-   
+    alignItems: 'center',
   },
   buttonText: {
-    color: "#FFF",
+    color: '#FFF',
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
-  
+
   signupText: {
-    color: "#FFF",
+    color: '#FFF',
     fontSize: 16,
   },
   signupLink: {
-    color: "#FF9C50",
+    color: '#FF9C50',
     fontSize: 16,
-    fontWeight: "bold",
-    textDecorationLine: "underline",
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
   },
 });
 
