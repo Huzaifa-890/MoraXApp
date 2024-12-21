@@ -4,9 +4,7 @@ import * as Animatable from 'react-native-animatable';
 import colors from '../../assessts/Colors/Colors';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-
-const Welcome = ({navigation}) => {
-
+const Welcome = ({ navigation }) => {
   return (
     <ImageBackground 
       source={require('../../assessts/Welcomebg.png')} // Background image path
@@ -33,7 +31,7 @@ const Welcome = ({navigation}) => {
         />
 
         {/* Get Started Button */}
-        <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate("Login")}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CreatAccount')}>
           <Text style={styles.buttonText}>Get Started!</Text>
           <Icon name="long-arrow-right" size={20} color="#fff" style={styles.icon} />
         </TouchableOpacity>
