@@ -6,6 +6,9 @@ import Welcome from "../screens/Auth/Welcome";
 import CreatAccount from "../screens/Auth/CreatAccount";
 import Otp from "../screens/Auth/Otp";
 import Login from "../screens/Auth/Login";
+import OtpVerification from "../screens/Auth/OtpVerification";
+
+
 
 
 const AuthNavigation = (props) => {
@@ -49,6 +52,11 @@ const AuthNavigation = (props) => {
                     name="Login"
                     component={Login}
                     options={{ title: "Login" }}
+                />
+                <Stack.Screen
+                    name="OtpVerification"
+                    component={OtpVerification}
+                    options={{ title: "OtpVerification" }}
                 />
 
             </Stack.Navigator>

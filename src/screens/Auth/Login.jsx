@@ -9,10 +9,10 @@ import {
   Animated,
 } from 'react-native';
 import colors from '../../assessts/Colors/Colors';
-import {useUser} from '../../context/UserContext';
+// import {useUser} from '../../context/UserContext';
 
 const Login = ({navigation}) => {
-  const {setIsLogin} = useUser();
+  // const {setIsLogin} = useUser();
 
   const fadeAnim = useRef(new Animated.Value(0)).current; // Initial opacity
   const slideAnim = useRef(new Animated.Value(-200)).current; // Initial position
@@ -40,13 +40,13 @@ const Login = ({navigation}) => {
 
   return (
     <ImageBackground
-      source={require('../../assessts/Morabg.png')}
+      source={require('../../assessts/Otpbg.png')}
       style={styles.container}
       resizeMode="cover">
       <View style={styles.innerContainer}>
         {/* Animated Logo */}
         <Animated.Image
-          source={require('../../assessts/MoraLOgo.png')}
+          source={require('../../assessts/Loginimg.png')}
           style={[
             styles.logo,
             {
@@ -83,7 +83,7 @@ const Login = ({navigation}) => {
           {/* Login Button */}
           <TouchableOpacity
             style={styles.button}
-            onPress={() => setIsLogin(true)}>
+            onPress={() => navigation.navigate('OtpVerification')}>
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
 
@@ -112,8 +112,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   logo: {
-    width: 250,
-    height: 250,
+    width: 300,
+    height: 300,
     marginBottom: 10,
     resizeMode: 'contain',
   },
