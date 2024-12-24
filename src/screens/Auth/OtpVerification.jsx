@@ -8,29 +8,17 @@ import {
   Animated,
 } from 'react-native';
 
-// Replace this with the actual hook import
-import { useUser } from '../../context/UserContext'; // Example: Replace with actual path
-
-// Placeholder for colors (replace with actual colors import if needed)
-const colors = {
-  PrimaryColor: '#1A1A1A', // Replace with your color
-  dialOutline: '#FF8C00', // Replace with your outline color
-};
+import colors from '../../assessts/Colors/Colors'; // Path fixed
+import { useUser } from '../../context/UserContext'; // Replace with your path
 
 const OtpVerification = ({ navigation }) => {
-  // State and Hooks
-  const [otp, setOtp] = useState('');
   const [showContent, setShowContent] = useState(false);
+  const { setIsLogin } = useUser();
 
-  // User context
-  const { setIsLogin } = useUser(); // Replace this with your actual context call
-
-  // Animation refs
-  const logoAnim = useRef(new Animated.Value(0)).current; // Logo Animation
-  const modalAnim = useRef(new Animated.Value(300)).current; // Modal Animation
+  const logoAnim = useRef(new Animated.Value(0)).current;
+  const modalAnim = useRef(new Animated.Value(300)).current;
 
   useEffect(() => {
-    // Start animations after 2 seconds
     const timer = setTimeout(() => {
       setShowContent(true);
       startAnimations();
@@ -39,10 +27,9 @@ const OtpVerification = ({ navigation }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Start Animation
   const startAnimations = () => {
     Animated.timing(logoAnim, {
-      toValue: -50, // Moves logo upwards
+      toValue: -200, // Move logo upwards (adjust based on design)
       duration: 500,
       useNativeDriver: true,
     }).start();
@@ -54,13 +41,15 @@ const OtpVerification = ({ navigation }) => {
     }).start();
   };
 
-  // Handle Verification
   const handleVerification = () => {
-    console.log('OTP Verified:', otp);
-    setIsLogin(true); // Update login state (ensure `useUser` context supports this)
+    console.log('OTP Verified');
+    setIsLogin(true);
 
-    // Navigate to the next screen
-    navigation.navigate('Home'); // Replace 'Home' with your desired screen name
+    if (navigation) {
+      navigation.replace('Home'); // Replace with your screen name
+    } else {
+      console.error('Navigation not initialized');
+    }
   };
 
   return (
@@ -73,7 +62,7 @@ const OtpVerification = ({ navigation }) => {
         ]}
       >
         <Image
-          source={require('../../assessts/MoraLOgo.png')} // Replace with your logo
+          source={require('../../assessts/MoraLOgo.png')} // Path fixed
           style={styles.coinImage}
         />
       </Animated.View>
@@ -82,18 +71,19 @@ const OtpVerification = ({ navigation }) => {
       {showContent && (
         <Animated.View
           style={[
-            styles.modalContainer,
+            styles.shadowWrapper,
             { transform: [{ translateY: modalAnim }] },
           ]}
         >
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Your Email is Verified</Text>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={handleVerification} // Added the handler
-            >
-              <Text style={styles.buttonText}>Go ahead</Text>
-            </TouchableOpacity>
+          {/* Shadow container */}
+          <View style={styles.shadowBox}>
+            {/* Modal with border */}
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>Your Email is Verified</Text>
+              <TouchableOpacity style={styles.button} onPress={handleVerification}>
+                <Text style={styles.buttonText}>Go ahead</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </Animated.View>
       )}
@@ -101,60 +91,72 @@ const OtpVerification = ({ navigation }) => {
   );
 };
 
+// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.PrimaryColor,
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
-    flexGrow: 1, // Prevents overflow and ensures proper scaling
   },
   logoContainer: {
-    marginTop: 100, // Adjusted margin to prevent logo cutoff
+    position: 'absolute',
+    top: '30%', // Adjust the starting position
     alignItems: 'center',
-    padding: 20,
+    zIndex: 10, // Ensure it stays above the modal
   },
   coinImage: {
-    width: 300,
-    height: 300,
-    resizeMode: 'contain', // Ensures image fits properly
+    width: 250,
+    height: 250,
+    resizeMode: 'contain',
   },
-  modalContainer: {
+  shadowWrapper: {
     position: 'absolute',
     bottom: 0,
+    width: '100.5%',
+    height: '50%', // Adjust modal height
+  },
+  shadowBox: {
     width: '100%',
-    backgroundColor: colors.PrimaryColor,
-    padding: 80, // Reduced padding to prevent modal overlap
+    height: '100%',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    borderTopWidth: 4,
-    borderRightWidth: 4,
-    borderLeftWidth: 4,
-    borderColor: colors.dialOutline,
-    shadowColor: '#DCBD36',
-    shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.5,
-    shadowRadius: 10,
-    elevation: 10, // Added for Android shadow
+    elevation: 12, // Shadow for Android
+    shadowColor: 'white', // Shadow color
+    shadowOffset: { width: 0, height: -5 }, // Shadow only at the top
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
   },
-  modalContent: {
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#1c0439', // Match the primary color
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    borderColor: '#F4A300', // Border color
+    borderTopWidth: 4, // Border width for top
+    borderRightWidth: 1,
+    borderLeftWidth: 1, // Border
   },
   modalTitle: {
     color: '#FFFFFF',
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 20,
+    textAlign: 'center',
   },
   button: {
     backgroundColor: '#FF8C00',
-    paddingVertical: 12,
-    paddingHorizontal: 50,
+    paddingVertical: 15,
+    paddingHorizontal: 60,
     borderRadius: 30,
+    marginTop: 20,
   },
   buttonText: {
     color: '#FFFFFF',
     fontWeight: 'bold',
+    fontSize: 16,
   },
 });
 
