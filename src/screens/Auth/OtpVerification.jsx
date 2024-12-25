@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -9,11 +9,11 @@ import {
 } from 'react-native';
 
 import colors from '../../assessts/Colors/Colors'; // Path fixed
-import { useUser } from '../../context/UserContext'; // Replace with your path
+import {useUser} from '../../context/UserContext'; // Replace with your path
 
-const OtpVerification = ({ navigation }) => {
+const OtpVerification = ({navigation}) => {
   const [showContent, setShowContent] = useState(false);
-  const { setIsLogin } = useUser();
+  const {setIsLogin} = useUser();
 
   const logoAnim = useRef(new Animated.Value(0)).current;
   const modalAnim = useRef(new Animated.Value(300)).current;
@@ -44,23 +44,13 @@ const OtpVerification = ({ navigation }) => {
   const handleVerification = () => {
     console.log('OTP Verified');
     setIsLogin(true);
-
-    if (navigation) {
-      navigation.replace('Home'); // Replace with your screen name
-    } else {
-      console.error('Navigation not initialized');
-    }
   };
 
   return (
     <View style={styles.container}>
       {/* Logo Section */}
       <Animated.View
-        style={[
-          styles.logoContainer,
-          { transform: [{ translateY: logoAnim }] },
-        ]}
-      >
+        style={[styles.logoContainer, {transform: [{translateY: logoAnim}]}]}>
         <Image
           source={require('../../assessts/MoraLOgo.png')} // Path fixed
           style={styles.coinImage}
@@ -72,15 +62,16 @@ const OtpVerification = ({ navigation }) => {
         <Animated.View
           style={[
             styles.shadowWrapper,
-            { transform: [{ translateY: modalAnim }] },
-          ]}
-        >
+            {transform: [{translateY: modalAnim}]},
+          ]}>
           {/* Shadow container */}
           <View style={styles.shadowBox}>
             {/* Modal with border */}
             <View style={styles.modalContainer}>
               <Text style={styles.modalTitle}>Your Email is Verified</Text>
-              <TouchableOpacity style={styles.button} onPress={handleVerification}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleVerification}>
                 <Text style={styles.buttonText}>Go ahead</Text>
               </TouchableOpacity>
             </View>
@@ -123,7 +114,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     elevation: 12, // Shadow for Android
     shadowColor: 'white', // Shadow color
-    shadowOffset: { width: 0, height: -5 }, // Shadow only at the top
+    shadowOffset: {width: 0, height: -5}, // Shadow only at the top
     shadowOpacity: 0.2,
     shadowRadius: 8,
   },
