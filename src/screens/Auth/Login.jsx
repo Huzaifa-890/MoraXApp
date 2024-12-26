@@ -9,10 +9,10 @@ import {
   Animated,
 } from 'react-native';
 import colors from '../../assessts/Colors/Colors';
-// import {useUser} from '../../context/UserContext';
+import {useUser} from '../../context/UserContext';
 
 const Login = ({navigation}) => {
-  // const {setIsLogin} = useUser();
+  const {setIsLogin} = useUser();
 
   const fadeAnim = useRef(new Animated.Value(0)).current; // Initial opacity
   const slideAnim = useRef(new Animated.Value(-200)).current; // Initial position
@@ -83,7 +83,7 @@ const Login = ({navigation}) => {
           {/* Login Button */}
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('OtpVerification')}>
+            onPress={() => setIsLogin(true)}>
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
 

@@ -60,7 +60,6 @@ const OtpVerification = ({ navigation }) => {
     setIsLogin(true);
 
     // Navigate to the next screen
-    navigation.navigate('Home'); 
   };
 
   return (
