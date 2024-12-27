@@ -4,7 +4,9 @@ import * as Animatable from 'react-native-animatable';
 import colors from '../../assessts/Colors/Colors';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+
 const Welcome = ({ navigation }) => {
+
   return (
     <ImageBackground 
       source={require('../../assessts/Welcomebg.png')} // Background image path

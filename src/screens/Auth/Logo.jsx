@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, Animated, Image, ImageBackground } from 'react-native';
 import colors from '../../assessts/Colors/Colors';
-
 const Logo = ({ navigation }) => {
   const progressBarWidth = useRef(new Animated.Value(0)).current; // Animated value for progress bar
   const [progress, setProgress] = useState(0); // State for percentage text
   const fadeAnim = useRef(new Animated.Value(0)).current; // Animated value for fade-in effect
+  
+  
 
   useEffect(() => {
     // Fade-in animation for logo

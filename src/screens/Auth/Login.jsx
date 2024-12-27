@@ -11,8 +11,11 @@ import {
 import colors from '../../assessts/Colors/Colors';
 import {useUser} from '../../context/UserContext';
 
+
 const Login = ({navigation}) => {
   const {setIsLogin} = useUser();
+
+ 
 
   const fadeAnim = useRef(new Animated.Value(0)).current; // Initial opacity
   const slideAnim = useRef(new Animated.Value(-200)).current; // Initial position
