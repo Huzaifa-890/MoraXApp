@@ -1,33 +1,50 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  ImageBackground,
+  ImageBackground,  
   Animated,
   Alert,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
 } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import colors from '../../assessts/Colors/Colors';
-import {useUser} from '../../context/UserContext';
+import { useUser } from '../../context/UserContext';
 import { useLoginMutation } from '../../redux/authSlice/authSlice';
 
+const Login = ({ navigation }) => {
+  const { setIsLogin } = useUser();
 
-const Login = ({navigation}) => {
-  const {setIsLogin} = useUser();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [login, { isLoading }] = useLoginMutation();
 
-  const [login,{isLoading}] = useLoginMutation();
-
-  const handleLogin = async () =>{
-    try {
-        const res = await login({email:"john@example.com",password:"password123"});
-        console.log(res);  
-    } catch (error) {
-      console.log(error);
-      Alert.alert("Something Went Wrong!");
+  const handleLogin = async () => {
+    if (!email.trim() || !password.trim()) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
     }
-  }
+
+    try {
+      const res = await login({ email, password });
+      if (res.error) {
+        Alert.alert('Error', res.error.data?.message || 'Login failed');
+      } else {
+        setIsLogin(true);
+        Alert.alert('Success', 'Login successful');
+        navigation.navigate('Home');
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Something went wrong!');
+    }
+  };
 
   const fadeAnim = useRef(new Animated.Value(0)).current; // Initial opacity
   const slideAnim = useRef(new Animated.Value(-200)).current; // Initial position
@@ -37,17 +54,18 @@ const Login = ({navigation}) => {
     Animated.sequence([
       Animated.timing(slideAnim, {
         toValue: 0,
-        duration: 1000,
+        duration: 800,
         useNativeDriver: true,
       }),
+      Animated.delay(200),
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 1000,
+        duration: 800,
         useNativeDriver: true,
       }),
       Animated.spring(scaleAnim, {
         toValue: 1,
-        friction: 5,
+        friction: 6,
         useNativeDriver: true,
       }),
     ]).start();
@@ -58,60 +76,77 @@ const Login = ({navigation}) => {
       source={require('../../assessts/Otpbg.png')}
       style={styles.container}
       resizeMode="cover">
-      <View style={styles.innerContainer}>
-        {/* Animated Logo */}
-        <Animated.Image
-          source={require('../../assessts/Loginimg.png')}
-          style={[
-            styles.logo,
-            {
-              opacity: fadeAnim,
-              transform: [{translateY: slideAnim}],
-            },
-          ]}
-        />
-
-        {/* Login Title */}
-        <Text style={styles.title}>Login</Text>
-
-        {/* Form with Zoom Animation */}
-        <Animated.View style={[styles.form, {transform: [{scale: scaleAnim}]}]}>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your Email / Phone"
-            placeholderTextColor="#AAAAAA"
-            keyboardType="email-address"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            placeholderTextColor="#AAAAAA"
-            secureTextEntry={true}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={styles.innerContainer}>
+          {/* Animated Logo */}
+          <Animated.Image
+            source={require('../../assessts/Loginimg.png')}
+            style={[
+              styles.logo,
+              {
+                opacity: fadeAnim,
+                transform: [{ translateY: slideAnim }, { scale: scaleAnim }],
+              },
+            ]}
           />
 
-          {/* Forgot Password */}
-          <TouchableOpacity
-            onPress={() => console.log('Forgot Password Pressed')}>
-            <Text style={styles.forgotPassword}>Forgot Password</Text>
-          </TouchableOpacity>
+          {/* Login Title */}
+          <Text style={styles.title}>Login</Text>
 
-          {/* Login Button */}
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleLogin}>
-            <Text style={styles.buttonText}>Login</Text>
-          </TouchableOpacity>
+          {/* Form with Zoom Animation */}
+          <Animated.View style={[styles.form, { transform: [{ scale: scaleAnim }] }]}>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your Email"
+              placeholderTextColor="#AAAAAA"
+              keyboardType="email-address"
+              value={email}
+              onChangeText={setEmail}
+            />
+            <View style={styles.passwordContainer}>
+              <TextInput
+                style={styles.inputPassword}
+                placeholder="Password"
+                placeholderTextColor="#AAAAAA"
+                secureTextEntry={!showPassword}
+                value={password}
+                onChangeText={setPassword}
+              />
+              <TouchableOpacity
+                style={styles.eyeIcon}
+                onPress={() => setShowPassword(!showPassword)}>
+                <FontAwesome name={showPassword ? 'eye-slash' : 'eye'} size={24} color="#130228" />
+              </TouchableOpacity>
+            </View>
 
-          {/* Signup Section */}
-          <View style={styles.signupContainer}>
-            <Text style={styles.signupText}>Do you have an account?</Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('CreatAccount')}>
-              <Text style={styles.signupLink}> Sign up</Text>
+            {/* Forgot Password */}
+            <TouchableOpacity onPress={() => console.log('Forgot Password Pressed')}>
+              <Text style={styles.forgotPassword}>Forgot Password</Text>
             </TouchableOpacity>
-          </View>
-        </Animated.View>
-      </View>
+
+            {/* Login Button */}
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleLogin}
+              disabled={isLoading}
+              accessibilityRole="button"
+              accessibilityLabel="Login Button"
+              accessibilityHint="Press to login">
+              <Text style={styles.buttonText}>{isLoading ? 'Loading...' : 'Login'}</Text>
+            </TouchableOpacity>
+
+            {/* Signup Section */}
+            <View style={styles.signupContainer}>
+              <Text style={styles.signupText}>Don't have an account?</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('CreatAccount')}>
+                <Text style={styles.signupLink}> Sign up</Text>
+              </TouchableOpacity>
+            </View>
+          </Animated.View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </ImageBackground>
   );
 };
@@ -121,10 +156,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: colors.PrimaryColor,
+    alignItems: 'center',
   },
   innerContainer: {
     alignItems: 'center',
     paddingHorizontal: 20,
+    marginVertical: 50,
   },
   logo: {
     width: 300,
@@ -152,6 +189,22 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     fontSize: 16,
   },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFF',
+    borderRadius: 8,
+    marginBottom: 15,
+  },
+  inputPassword: {
+    flex: 1,
+    padding: 15,
+    fontSize: 16,
+    color: '#000',
+  },
+  eyeIcon: {
+    padding: 10,
+  },
   forgotPassword: {
     alignSelf: 'flex-end',
     color: '#AAAAAA',
@@ -169,7 +222,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-
   signupText: {
     color: '#FFF',
     fontSize: 16,
