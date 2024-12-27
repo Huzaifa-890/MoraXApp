@@ -16,8 +16,19 @@ const authSlice = createApi({
       },
     }),
   }),
+  endpoints: builder => ({
+    signup: builder.mutation({
+      query: (data) => {
+        return {
+          url: '/signup',
+          method: 'POST',
+          body: data,
+        };
+      },
+    }),
+  }),
 });
 
-export const {useLoginMutation} = authSlice;
+export const {useLoginMutation,useSignupMutation} = authSlice;
 
 export default authSlice;

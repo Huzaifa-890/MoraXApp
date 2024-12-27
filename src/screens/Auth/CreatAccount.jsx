@@ -5,86 +5,145 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Image,
   ImageBackground,
   Animated,
+  Alert,
 } from 'react-native';
 import colors from '../../assessts/Colors/Colors';
+import { useSignupMutation } from '../../redux/authSlice/authSlice';
 
-const CreatAccount = ({ navigation }) => {
+const CreateAccount = ({ navigation }) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+  });
   const [isSelected, setSelection] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [signup, { isLoading }] = useSignupMutation();
 
   // Animation references
-  const fadeAnim = useRef(new Animated.Value(0)).current; // Initial opacity: 0
-  const slideAnim = useRef(new Animated.Value(-200)).current; // Initial position: -200 (above the screen)
-  const scaleAnim = useRef(new Animated.Value(0.8)).current; // Initial scale: 0.8
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(-200)).current;
+  const scaleAnim = useRef(new Animated.Value(0.8)).current;
 
   useEffect(() => {
     Animated.sequence([
-      // Slide-in animation for the logo from the top
       Animated.timing(slideAnim, {
-        toValue: 0, // Final position: 0 (original position)
+        toValue: 0,
         duration: 1000,
         useNativeDriver: true,
       }),
-      // Fade-in animation for the logo
       Animated.timing(fadeAnim, {
-        toValue: 1, // Fully visible
+        toValue: 1,
         duration: 1000,
         useNativeDriver: true,
       }),
-      // Scale animation for the form
       Animated.spring(scaleAnim, {
-        toValue: 1, // Original size
+        toValue: 1,
         friction: 5,
         useNativeDriver: true,
       }),
     ]).start();
-  }, [fadeAnim, slideAnim, scaleAnim]);
+  }, []);
+
+  const handleInputChange = (field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const validateInputs = () => {
+    const newErrors = {};
+    if (!formData.name.trim()) newErrors.name = 'Name is required.';
+    if (!formData.email.trim()) newErrors.email = 'Email is required.';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
+      newErrors.email = 'Enter a valid email address.';
+    if (!formData.password.trim() || formData.password.length < 6)
+      newErrors.password = 'Password must be at least 6 characters.';
+    if (formData.password !== formData.password_confirmation)
+      newErrors.password_confirmation = 'Passwords do not match.';
+    if (!isSelected) newErrors.terms = 'You must accept the terms and conditions.';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSignup = async () => {
+    if (!validateInputs()) return;
+
+    try {
+      const response = await signup(formData).unwrap(); // Correct API call
+      if (response?.success) {
+        Alert.alert('Success', 'Account created successfully!');
+        navigation.navigate('Login');
+      } else {
+        Alert.alert('Error', response?.message || 'Unable to create account.');
+      }
+    } catch (error) {
+      Alert.alert('Error', error?.data?.message || 'Something went wrong!');
+    }
+  };
 
   return (
     <ImageBackground
-      source={require('../../assessts/Otpbg.png')} // Replace with your background image path
+      source={require('../../assessts/Otpbg.png')}
       style={styles.container}
       resizeMode="cover"
     >
       <View style={styles.innerContainer}>
-        {/* Logo with slide and fade animation */}
         <Animated.Image
-          source={require('../../assessts/MoraLOgo.png')} // Replace with your logo image path
+          source={require('../../assessts/MoraLOgo.png')}
           style={[
             styles.logo,
             {
               opacity: fadeAnim,
-              transform: [{ translateY: slideAnim }], // Apply slide animation
+              transform: [{ translateY: slideAnim }],
             },
           ]}
         />
-
-        {/* Title */}
         <Text style={styles.title}>Create Account</Text>
 
-        {/* Form with zoom animation */}
         <Animated.View style={[styles.form, { transform: [{ scale: scaleAnim }] }]}>
           <TextInput
             style={styles.input}
             placeholder="Enter Your Name"
             placeholderTextColor="#555"
+            value={formData.name}
+            onChangeText={(value) => handleInputChange('name', value)}
           />
+          {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
+
           <TextInput
             style={styles.input}
             placeholder="Enter Your Email"
             placeholderTextColor="#555"
             keyboardType="email-address"
+            value={formData.email}
+            onChangeText={(value) => handleInputChange('email', value)}
           />
+          {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+
           <TextInput
             style={styles.input}
             placeholder="Password"
             placeholderTextColor="#555"
-            secureTextEntry={true}
+            secureTextEntry
+            value={formData.password}
+            onChangeText={(value) => handleInputChange('password', value)}
           />
+          {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
 
-          {/* Checkbox */}
+          <TextInput
+            style={styles.input}
+            placeholder="Confirm Password"
+            placeholderTextColor="#555"
+            secureTextEntry
+            value={formData.password_confirmation}
+            onChangeText={(value) => handleInputChange('password_confirmation', value)}
+          />
+          {errors.password_confirmation && (
+            <Text style={styles.errorText}>{errors.password_confirmation}</Text>
+          )}
+
           <View style={styles.checkboxContainer}>
             <TouchableOpacity
               style={styles.checkbox}
@@ -96,13 +155,12 @@ const CreatAccount = ({ navigation }) => {
               Yes I accept all terms, conditions, and policies
             </Text>
           </View>
+          {errors.terms && <Text style={styles.errorText}>{errors.terms}</Text>}
 
-          {/* Signup Button */}
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Otp')}>
-            <Text style={styles.buttonText}>Sign up</Text>
+          <TouchableOpacity style={styles.button} onPress={handleSignup} disabled={isLoading}>
+            <Text style={styles.buttonText}>{isLoading ? 'Signing Up...' : 'Sign up'}</Text>
           </TouchableOpacity>
 
-          {/* Login Text */}
           <View style={styles.loginContainer}>
             <Text style={styles.loginText}>Already have an account?</Text>
             <TouchableOpacity onPress={() => navigation.navigate('Login')}>
@@ -114,7 +172,6 @@ const CreatAccount = ({ navigation }) => {
     </ImageBackground>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -188,7 +245,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#FFF',
     fontSize: 20,
-    fontWeight: 'normal normal',
   },
   loginContainer: {
     flexDirection: 'row',
@@ -203,6 +259,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     marginLeft: 5,
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginBottom: 10,
   },
 });
 
