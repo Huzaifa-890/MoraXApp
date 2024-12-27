@@ -7,15 +7,27 @@ import {
   StyleSheet,
   ImageBackground,
   Animated,
+  Alert,
 } from 'react-native';
 import colors from '../../assessts/Colors/Colors';
 import {useUser} from '../../context/UserContext';
+import { useLoginMutation } from '../../redux/authSlice/authSlice';
 
 
 const Login = ({navigation}) => {
   const {setIsLogin} = useUser();
 
- 
+  const [login,{isLoading}] = useLoginMutation();
+
+  const handleLogin = async () =>{
+    try {
+        const res = await login({email:"john@example.com",password:"password123"});
+        console.log(res);  
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Something Went Wrong!");
+    }
+  }
 
   const fadeAnim = useRef(new Animated.Value(0)).current; // Initial opacity
   const slideAnim = useRef(new Animated.Value(-200)).current; // Initial position
@@ -86,7 +98,7 @@ const Login = ({navigation}) => {
           {/* Login Button */}
           <TouchableOpacity
             style={styles.button}
-            onPress={() => setIsLogin(true)}>
+            onPress={handleLogin}>
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
 

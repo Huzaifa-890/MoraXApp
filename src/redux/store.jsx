@@ -1,35 +1,44 @@
-import {  configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
-import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER, persistReducer, persistStore } from 'redux-persist';
+import {
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+  persistReducer,
+  persistStore,
+} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import auth from './auth/auth';
-import {authState} from './Features/authState';
+import { authState } from './Features/authState';
+import authSlice from './authSlice/authSlice';
 
-
+// Persist config
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  blacklist: ['Profile', 'stripe'],
+  blacklist: ['Profile', 'stripe'], // Blacklist keys
 };
 
-// Combine your reducers
+// Combine reducers
 const rootReducer = combineReducers({
-  [auth.reducerPath]: auth.reducer,
+  [authSlice.reducerPath]: authSlice.reducer, // Correct reducer registration
   userData: authState,
 });
 
-// Create the persisted reducer
+// Persisted reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// Configure your store
+// Configure store
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: getDefaultMiddleware =>
+  middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(auth.middleware),
+    }).concat(authSlice.middleware), // Correct middleware
 });
 
 export default store;
