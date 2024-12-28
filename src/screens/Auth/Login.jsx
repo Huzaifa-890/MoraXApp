@@ -37,6 +37,7 @@ const Login = ({navigation}) => {
 
       if (res.error) {
         Alert.alert('Error', res.error.data?.message || 'Login failed');
+        console.log(res.error.data);
       } else {
         dispatch(authUser(res?.data));
       }
