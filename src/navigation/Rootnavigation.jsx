@@ -7,7 +7,7 @@ const RootNavigation = () => {
   const selector = useSelector(state => state?.userData);
   const isLoggin = selector?.isLoggin;
 
-  return isLoggin ? <UserNavigation /> : <AuthNavigation />;
+  return isLoggin ? <AuthNavigation /> : <UserNavigation />;
 };
 
 export default RootNavigation;

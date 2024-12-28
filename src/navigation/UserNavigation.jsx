@@ -5,60 +5,60 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Home from '../screens/User/Home';
-import About from '../screens/User/About';
-import Profile from '../screens/User/Profile';
+import Exchange from '../screens/User/Exchange';
+import Mine from '../screens/User/Mine';
+import Friends from '../screens/User/Friends';
 import Settings from '../screens/User/Settings';
 
-const HomeStack = createStackNavigator();
-const OrderStack = createStackNavigator();
-const CartStack = createStackNavigator();
+const ExchangeStack = createStackNavigator();
+const MineStack = createStackNavigator();
+const FriendsStack = createStackNavigator();
 const SettingStack = createStackNavigator();
 
 
 
-function HomeTab() {
+function ExchangeTab() {
     return (
-        <HomeStack.Navigator
+        <ExchangeStack.Navigator
             screenOptions={{
                 tabBarStyle: {
                     opacity: 0,
                 },
             }}
-            initialRouteName="Home">
-            <HomeStack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-        </HomeStack.Navigator>
+            initialRouteName="Exchange">
+            <ExchangeStack.Screen name="Exchange" component={Exchange} options={{ headerShown: false }} />
+        </ExchangeStack.Navigator>
     );
 }
 
-function AboutTab() {
+function MineTab() {
     return (
-        <OrderStack.Navigator
+        <MineStack.Navigator
             screenOptions={{
                 tabBarStyle: {
                     opacity: 0,
                 },
             }}
-            initialRouteName="About">
-            <OrderStack.Screen name="About" component={About} options={{ headerShown: false }} />
-        </OrderStack.Navigator>
+            initialRouteName="Mine">
+            <MineStack.Screen name="Mine" component={Mine} options={{ headerShown: false }} />
+        </MineStack.Navigator>
     );
 }
 
-function ProfileTab() {
+function FriendsTab() {
     return (
-        <CartStack.Navigator
+        <FriendsStack.Navigator
             screenOptions={{
                 tabBarStyle: {
                     opacity: 0,
                 },
             }}
             //hereeeeeeeeeee
-            initialRouteName="Profile">
-            <CartStack.Screen
-                name="Profile" component={Profile} options={{ headerShown: false, }} />
+            initialRouteName="Friends">
+            <FriendsStack.Screen
+                name="Friends" component={Friends} options={{ headerShown: false, }} />
 
-        </CartStack.Navigator>
+        </FriendsStack.Navigator>
     );
 }
 
@@ -122,15 +122,15 @@ const BtabNavigation = (props) => {
                     tabBarActiveTintColor: "white",
                 }}>
                 <Tab.Screen
-                    name="HomeTab"
-                    component={HomeTab}
+                    name="ExchangeTab"
+                    component={ExchangeTab}
                     style={{ paddingHorizontal: 0 }}
                     options={{
                         headerShown: false,
                         tabBarIcon: ({ color = 'red', size, focused }) => (
                             <View style={focused ? { marginBottom: 5, alignItems: "center", width: 200 } : { alignItems: "center", width: 100 }}>
                                 <FontAwesome5 name="home" color={color} size={size} />
-                                <Text style={styles.Text}>Home</Text>
+                                <Text style={styles.Text}>Exchange</Text>
 
                             </View>
                         ),
@@ -138,15 +138,15 @@ const BtabNavigation = (props) => {
                     }}
                 />
                 <Tab.Screen
-                    name="OrdersTab"
-                    component={AboutTab}
+                    name="Mine"
+                    component={MineTab}
                     style={{ paddingHorizontal: 0 }}
                     options={{
                         headerShown: false,
                         tabBarIcon: ({ color = 'red', size, focused }) => (
                             <View style={focused ? { marginBottom: 5, alignItems: "center", width: 200 } : { alignItems: "center", width: 100 }}>
                                 <Ionicons name="bag-handle" color={color} size={size} />
-                                <Text style={styles.Text}>About</Text>
+                                <Text style={styles.Text}>Mine</Text>
                             </View>
                         ),
                         tabBarLabel: ({ focused }) => null,
@@ -154,8 +154,8 @@ const BtabNavigation = (props) => {
                 />
 
                 <Tab.Screen
-                    name="CartTab"
-                    component={ProfileTab}
+                    name="Friends"
+                    component={FriendsTab}
                     style={{ paddingHorizontal: 0 }}
                     options={{
                         headerShown: false,

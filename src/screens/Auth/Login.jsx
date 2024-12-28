@@ -26,30 +26,10 @@ const Login = ({navigation}) => {
   const [showPassword, setShowPassword] = useState(false);
   const [login, {isLoading}] = useLoginMutation();
 
-  const handleLogin = async () => {
-    if (!email.trim() || !password.trim()) {
-      Alert.alert('Error', 'Please fill in all fields');
-      return;
-    }
-
-    try {
-      const res = await login({email, password});
-
-      if (res.error) {
-        Alert.alert('Error', res.error.data?.message || 'Login failed');
-        console.log(res.error.data);
-      } else {
-        dispatch(authUser(res?.data));
-      }
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Error', 'Something went wrong!');
-    }
-  };
-
-  const fadeAnim = useRef(new Animated.Value(0)).current; // Initial opacity
-  const slideAnim = useRef(new Animated.Value(-200)).current; // Initial position
-  const scaleAnim = useRef(new Animated.Value(0.8)).current; // Initial scale
+  // Animations
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(-200)).current;
+  const scaleAnim = useRef(new Animated.Value(0.8)).current;
 
   useEffect(() => {
     Animated.sequence([
@@ -72,6 +52,38 @@ const Login = ({navigation}) => {
     ]).start();
   }, []);
 
+  // Handle Login
+  const handleLogin = async () => {
+    if (!email.trim() || !password.trim()) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
+
+    try {
+      console.log('Attempting Login with:', email, password);
+      const res = await login({email, password});
+      console.log('Response:', res);
+
+      // Handle Errors
+      if (res?.error) {
+        Alert.alert('Error', res.error?.data?.message || 'Login failed');
+        console.log('Error Response:', res.error);
+        return;
+      }
+
+      // Success - Dispatch user data
+      if (res?.data) {
+        dispatch(authUser(res.data));
+        Alert.alert('Success', 'Login Successful!');
+      } else {
+        Alert.alert('Error', 'Unexpected response from server');
+      }
+    } catch (error) {
+      console.error('Catch Error:', error);
+      Alert.alert('Error', 'Something went wrong!');
+    }
+  };
+
   return (
     <ImageBackground
       source={require('../../assessts/Otpbg.png')}
@@ -81,7 +93,6 @@ const Login = ({navigation}) => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}>
         <ScrollView contentContainerStyle={styles.innerContainer}>
-          {/* Animated Logo */}
           <Animated.Image
             source={require('../../assessts/Loginimg.png')}
             style={[
@@ -93,12 +104,9 @@ const Login = ({navigation}) => {
             ]}
           />
 
-          {/* Login Title */}
           <Text style={styles.title}>Login</Text>
 
-          {/* Form with Zoom Animation */}
-          <Animated.View
-            style={[styles.form, {transform: [{scale: scaleAnim}]}]}>
+          <Animated.View style={[styles.form, {transform: [{scale: scaleAnim}]}]}>
             <TextInput
               style={styles.input}
               placeholder="Enter your Email"
@@ -127,30 +135,20 @@ const Login = ({navigation}) => {
               </TouchableOpacity>
             </View>
 
-            {/* Forgot Password */}
-            <TouchableOpacity
-              onPress={() => console.log('Forgot Password Pressed')}>
+            <TouchableOpacity onPress={() => console.log('Forgot Password Pressed')}>
               <Text style={styles.forgotPassword}>Forgot Password</Text>
             </TouchableOpacity>
 
-            {/* Login Button */}
             <TouchableOpacity
               style={styles.button}
               onPress={handleLogin}
-              disabled={isLoading}
-              accessibilityRole="button"
-              accessibilityLabel="Login Button"
-              accessibilityHint="Press to login">
-              <Text style={styles.buttonText}>
-                {isLoading ? 'Loading...' : 'Login'}
-              </Text>
+              disabled={isLoading}>
+              <Text style={styles.buttonText}>{isLoading ? 'Loading...' : 'Login'}</Text>
             </TouchableOpacity>
 
-            {/* Signup Section */}
             <View style={styles.signupContainer}>
               <Text style={styles.signupText}>Don't have an account?</Text>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('CreatAccount')}>
+              <TouchableOpacity onPress={() => navigation.navigate('CreatAccount')}>
                 <Text style={styles.signupLink}> Sign up</Text>
               </TouchableOpacity>
             </View>
