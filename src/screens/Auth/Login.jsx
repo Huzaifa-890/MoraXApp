@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  ImageBackground,  
+  ImageBackground,
   Animated,
   Alert,
   KeyboardAvoidingView,
@@ -14,16 +14,17 @@ import {
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import colors from '../../assessts/Colors/Colors';
-import { useUser } from '../../context/UserContext';
-import { useLoginMutation } from '../../redux/authSlice/authSlice';
+import {useLoginMutation} from '../../redux/authSlice/authSlice';
+import {useDispatch} from 'react-redux';
+import {authUser} from '../../redux/Features/authState';
 
-const Login = ({ navigation }) => {
-  const { setIsLogin } = useUser();
+const Login = ({navigation}) => {
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [login, { isLoading }] = useLoginMutation();
+  const [login, {isLoading}] = useLoginMutation();
 
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
@@ -32,13 +33,12 @@ const Login = ({ navigation }) => {
     }
 
     try {
-      const res = await login({ email, password });
+      const res = await login({email, password});
+
       if (res.error) {
         Alert.alert('Error', res.error.data?.message || 'Login failed');
       } else {
-        setIsLogin(true);
-        Alert.alert('Success', 'Login successful');
-        navigation.navigate('Home');
+        dispatch(authUser(res?.data));
       }
     } catch (error) {
       console.error(error);
@@ -78,7 +78,7 @@ const Login = ({ navigation }) => {
       resizeMode="cover">
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{ flex: 1 }}>
+        style={{flex: 1}}>
         <ScrollView contentContainerStyle={styles.innerContainer}>
           {/* Animated Logo */}
           <Animated.Image
@@ -87,7 +87,7 @@ const Login = ({ navigation }) => {
               styles.logo,
               {
                 opacity: fadeAnim,
-                transform: [{ translateY: slideAnim }, { scale: scaleAnim }],
+                transform: [{translateY: slideAnim}, {scale: scaleAnim}],
               },
             ]}
           />
@@ -96,7 +96,8 @@ const Login = ({ navigation }) => {
           <Text style={styles.title}>Login</Text>
 
           {/* Form with Zoom Animation */}
-          <Animated.View style={[styles.form, { transform: [{ scale: scaleAnim }] }]}>
+          <Animated.View
+            style={[styles.form, {transform: [{scale: scaleAnim}]}]}>
             <TextInput
               style={styles.input}
               placeholder="Enter your Email"
@@ -117,12 +118,17 @@ const Login = ({ navigation }) => {
               <TouchableOpacity
                 style={styles.eyeIcon}
                 onPress={() => setShowPassword(!showPassword)}>
-                <FontAwesome name={showPassword ? 'eye-slash' : 'eye'} size={24} color="#130228" />
+                <FontAwesome
+                  name={showPassword ? 'eye-slash' : 'eye'}
+                  size={24}
+                  color="#130228"
+                />
               </TouchableOpacity>
             </View>
 
             {/* Forgot Password */}
-            <TouchableOpacity onPress={() => console.log('Forgot Password Pressed')}>
+            <TouchableOpacity
+              onPress={() => console.log('Forgot Password Pressed')}>
               <Text style={styles.forgotPassword}>Forgot Password</Text>
             </TouchableOpacity>
 
@@ -134,13 +140,16 @@ const Login = ({ navigation }) => {
               accessibilityRole="button"
               accessibilityLabel="Login Button"
               accessibilityHint="Press to login">
-              <Text style={styles.buttonText}>{isLoading ? 'Loading...' : 'Login'}</Text>
+              <Text style={styles.buttonText}>
+                {isLoading ? 'Loading...' : 'Login'}
+              </Text>
             </TouchableOpacity>
 
             {/* Signup Section */}
             <View style={styles.signupContainer}>
               <Text style={styles.signupText}>Don't have an account?</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('CreatAccount')}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('CreatAccount')}>
                 <Text style={styles.signupLink}> Sign up</Text>
               </TouchableOpacity>
             </View>

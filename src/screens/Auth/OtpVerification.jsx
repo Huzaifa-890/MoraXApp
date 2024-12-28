@@ -9,11 +9,9 @@ import {
 } from 'react-native';
 
 import colors from '../../assessts/Colors/Colors'; // Path fixed
-import {useUser} from '../../context/UserContext'; // Replace with your path
 
 const OtpVerification = ({navigation}) => {
   const [showContent, setShowContent] = useState(false);
-  const {setIsLogin} = useUser();
 
   const logoAnim = useRef(new Animated.Value(0)).current;
   const modalAnim = useRef(new Animated.Value(300)).current;
@@ -43,7 +41,6 @@ const OtpVerification = ({navigation}) => {
 
   const handleVerification = () => {
     console.log('OTP Verified');
-    setIsLogin(true);
   };
 
   return (

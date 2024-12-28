@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -10,9 +10,9 @@ import {
   Alert,
 } from 'react-native';
 import colors from '../../assessts/Colors/Colors';
-import { useSignupMutation } from '../../redux/authSlice/authSlice';
+import {useSignupMutation} from '../../redux/authSlice/authSlice';
 
-const CreateAccount = ({ navigation }) => {
+const CreatAccount = ({navigation}) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,7 +21,7 @@ const CreateAccount = ({ navigation }) => {
   });
   const [isSelected, setSelection] = useState(false);
   const [errors, setErrors] = useState({});
-  const [signup, { isLoading }] = useSignupMutation();
+  const [signup, {isLoading}] = useSignupMutation();
 
   // Animation references
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -49,7 +49,7 @@ const CreateAccount = ({ navigation }) => {
   }, []);
 
   const handleInputChange = (field, value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData(prev => ({...prev, [field]: value}));
   };
 
   const validateInputs = () => {
@@ -58,11 +58,12 @@ const CreateAccount = ({ navigation }) => {
     if (!formData.email.trim()) newErrors.email = 'Email is required.';
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
       newErrors.email = 'Enter a valid email address.';
-    if (!formData.password.trim() || formData.password.length < 6)
+    if (!formData.password.trim() || formData.password.length < 8)
       newErrors.password = 'Password must be at least 6 characters.';
     if (formData.password !== formData.password_confirmation)
       newErrors.password_confirmation = 'Passwords do not match.';
-    if (!isSelected) newErrors.terms = 'You must accept the terms and conditions.';
+    if (!isSelected)
+      newErrors.terms = 'You must accept the terms and conditions.';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -71,15 +72,16 @@ const CreateAccount = ({ navigation }) => {
     if (!validateInputs()) return;
 
     try {
-      const response = await signup(formData).unwrap(); // Correct API call
-      if (response?.success) {
+      const response = await signup(formData); // Correct API call
+
+      if (!response?.error) {
         Alert.alert('Success', 'Account created successfully!');
-        navigation.navigate('Login');
+        navigation.navigate('OTP');
       } else {
         Alert.alert('Error', response?.message || 'Unable to create account.');
       }
     } catch (error) {
-      Alert.alert('Error', error?.data?.message || 'Something went wrong!');
+      Alert.alert('Error', error || 'Something went wrong!');
     }
   };
 
@@ -87,8 +89,7 @@ const CreateAccount = ({ navigation }) => {
     <ImageBackground
       source={require('../../assessts/Otpbg.png')}
       style={styles.container}
-      resizeMode="cover"
-    >
+      resizeMode="cover">
       <View style={styles.innerContainer}>
         <Animated.Image
           source={require('../../assessts/MoraLOgo.png')}
@@ -96,19 +97,19 @@ const CreateAccount = ({ navigation }) => {
             styles.logo,
             {
               opacity: fadeAnim,
-              transform: [{ translateY: slideAnim }],
+              transform: [{translateY: slideAnim}],
             },
           ]}
         />
         <Text style={styles.title}>Create Account</Text>
 
-        <Animated.View style={[styles.form, { transform: [{ scale: scaleAnim }] }]}>
+        <Animated.View style={[styles.form, {transform: [{scale: scaleAnim}]}]}>
           <TextInput
             style={styles.input}
             placeholder="Enter Your Name"
             placeholderTextColor="#555"
             value={formData.name}
-            onChangeText={(value) => handleInputChange('name', value)}
+            onChangeText={value => handleInputChange('name', value)}
           />
           {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
 
@@ -118,7 +119,7 @@ const CreateAccount = ({ navigation }) => {
             placeholderTextColor="#555"
             keyboardType="email-address"
             value={formData.email}
-            onChangeText={(value) => handleInputChange('email', value)}
+            onChangeText={value => handleInputChange('email', value)}
           />
           {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
 
@@ -128,9 +129,11 @@ const CreateAccount = ({ navigation }) => {
             placeholderTextColor="#555"
             secureTextEntry
             value={formData.password}
-            onChangeText={(value) => handleInputChange('password', value)}
+            onChangeText={value => handleInputChange('password', value)}
           />
-          {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
+          {errors.password && (
+            <Text style={styles.errorText}>{errors.password}</Text>
+          )}
 
           <TextInput
             style={styles.input}
@@ -138,7 +141,9 @@ const CreateAccount = ({ navigation }) => {
             placeholderTextColor="#555"
             secureTextEntry
             value={formData.password_confirmation}
-            onChangeText={(value) => handleInputChange('password_confirmation', value)}
+            onChangeText={value =>
+              handleInputChange('password_confirmation', value)
+            }
           />
           {errors.password_confirmation && (
             <Text style={styles.errorText}>{errors.password_confirmation}</Text>
@@ -147,8 +152,7 @@ const CreateAccount = ({ navigation }) => {
           <View style={styles.checkboxContainer}>
             <TouchableOpacity
               style={styles.checkbox}
-              onPress={() => setSelection(!isSelected)}
-            >
+              onPress={() => setSelection(!isSelected)}>
               {isSelected && <View style={styles.checkboxTick} />}
             </TouchableOpacity>
             <Text style={styles.checkboxText}>
@@ -157,8 +161,13 @@ const CreateAccount = ({ navigation }) => {
           </View>
           {errors.terms && <Text style={styles.errorText}>{errors.terms}</Text>}
 
-          <TouchableOpacity style={styles.button} onPress={handleSignup} disabled={isLoading}>
-            <Text style={styles.buttonText}>{isLoading ? 'Signing Up...' : 'Sign up'}</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleSignup}
+            disabled={isLoading}>
+            <Text style={styles.buttonText}>
+              {isLoading ? 'Signing Up...' : 'Sign up'}
+            </Text>
           </TouchableOpacity>
 
           <View style={styles.loginContainer}>

@@ -1,13 +1,14 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import {useUser} from '../../context/UserContext';
+import {useDispatch} from 'react-redux';
+import {logout} from '../../redux/Features/authState';
 
 const Settings = () => {
-  const {setIsLogin} = useUser();
+  const dispatch = useDispatch();
   return (
     <View>
       <Text>Settings</Text>
-      <TouchableOpacity onPress={() => setIsLogin(false)}>
+      <TouchableOpacity onPress={() => dispatch(logout())}>
         <Text>Logout</Text>
       </TouchableOpacity>
     </View>

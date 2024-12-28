@@ -1,5 +1,4 @@
-
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import API_BASE_URL from '../../Utils/Config/Config';
 
 const authSlice = createApi({
@@ -15,12 +14,10 @@ const authSlice = createApi({
         };
       },
     }),
-  }),
-  endpoints: builder => ({
     signup: builder.mutation({
-      query: (data) => {
+      query: data => {
         return {
-          url: '/signup',
+          url: '/register',
           method: 'POST',
           body: data,
         };
@@ -29,6 +26,6 @@ const authSlice = createApi({
   }),
 });
 
-export const {useLoginMutation,useSignupMutation} = authSlice;
+export const {useLoginMutation, useSignupMutation} = authSlice;
 
 export default authSlice;

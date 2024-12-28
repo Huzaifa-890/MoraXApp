@@ -1,16 +1,13 @@
 import React, {useState} from 'react';
 import AuthNavigation from './AuthNavigation';
 import UserNavigation from './UserNavigation';
-import {useUser} from '../context/UserContext';
+import {useSelector} from 'react-redux';
 
 const RootNavigation = () => {
-  const [authState, setAuthState] = useState({
-    userRole: 'User',
-    isLoggedIn: false, // Renamed for better clarity
-  });
-  const {isLogin} = useUser();
+  const selector = useSelector(state => state?.userData);
+  const isLoggin = selector?.isLoggin;
 
-  return isLogin ? <UserNavigation /> : <AuthNavigation />;
+  return isLoggin ? <UserNavigation /> : <AuthNavigation />;
 };
 
 export default RootNavigation;
