@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     color: '#FFB830',
     fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 70,
+    marginBottom: 70, 
   },
   coinImage: {
     width: 350,

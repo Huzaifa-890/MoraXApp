@@ -7,14 +7,29 @@ import {
   Image,
   Animated,
 } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import {useDispatch} from 'react-redux';
 
 import colors from '../../assessts/Colors/Colors'; // Path fixed
 
-const OtpVerification = ({navigation}) => {
+const OtpVerification = ({navigation,isLoading}) => {
+  const dispatch = useDispatch();
+  
+
   const [showContent, setShowContent] = useState(false);
+
+
+  const handlePress = () => {
+ 
+    if (!isLoading) {
+      navigation.navigate('Exchange');
+    }
+  };
+
 
   const logoAnim = useRef(new Animated.Value(0)).current;
   const modalAnim = useRef(new Animated.Value(300)).current;
+
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -52,6 +67,13 @@ const OtpVerification = ({navigation}) => {
           source={require('../../assessts/MoraLOgo.png')} // Path fixed
           style={styles.coinImage}
         />
+         <Animatable.Text 
+                  animation="fadeInDown" 
+                  duration={1500} 
+                  style={styles.welcomeText}
+                >
+                  Thank You Verification
+                </Animatable.Text>
       </Animated.View>
 
       {/* Modal Section */}
@@ -65,12 +87,21 @@ const OtpVerification = ({navigation}) => {
           <View style={styles.shadowBox}>
             {/* Modal with border */}
             <View style={styles.modalContainer}>
-              <Text style={styles.modalTitle}>Your Email is Verified</Text>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={handleVerification}>
-                <Text style={styles.buttonText}>Go ahead</Text>
-              </TouchableOpacity>
+            <Image 
+              source={require('../../assessts/modallogo.png')} // Replace with your logo path
+              style={styles.logo} 
+            />
+            <Text style={styles.modalTitle}>Your Email is Verified</Text>
+            // 
+            <TouchableOpacity
+            style={styles.button}
+            onPress={handlePress}
+            disabled={isLoading}>
+            <Text style={styles.buttonText}>
+              {isLoading ? 'Loading...' : 'Go Ahead '}
+            </Text>
+          </TouchableOpacity>
+            
             </View>
           </View>
         </Animated.View>
@@ -102,7 +133,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100.5%',
-    height: '50%', // Adjust modal height
+    height: '40%', // Adjust modal height
   },
   shadowBox: {
     width: '100%',
@@ -114,37 +145,60 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: -5}, // Shadow only at the top
     shadowOpacity: 0.2,
     shadowRadius: 8,
+    
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'between',
     alignItems: 'center',
     backgroundColor: '#1c0439', // Match the primary color
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     borderColor: '#F4A300', // Border color
-    borderTopWidth: 4, // Border width for top
+    borderTopWidth: 6, // Border width for top
     borderRightWidth: 1,
     borderLeftWidth: 1, // Border
   },
   modalTitle: {
     color: '#FFFFFF',
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
   },
-  button: {
-    backgroundColor: '#FF8C00',
-    paddingVertical: 15,
-    paddingHorizontal: 60,
-    borderRadius: 30,
-    marginTop: 20,
+ button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FDA058',
+    paddingVertical: 18,
+    paddingHorizontal:120,
+    borderRadius: 50,
+    elevation: 10,
+    shadowColor: '#FF7F3F',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.5,
+    marginTop: 80,
+
+    // marginTop: 100,
   },
   buttonText: {
-    color: '#FFFFFF',
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: '600',
+    marginRight: 10,
+  },
+  welcomeText: {
+    color: '#FDA058',
+    fontSize: 28,
     fontWeight: 'bold',
-    fontSize: 16,
+    marginTop: 20, 
+  },
+  logo: {
+    width: 60,
+    height: 60,
+    marginBottom: 20,
+    marginTop: 20,
   },
 });
 
