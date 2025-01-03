@@ -23,9 +23,18 @@ const authSlice = createApi({
         };
       },
     }),
+    Otp: builder.mutation({
+      query: data => {
+        return {
+          url: '/verify-otp',
+          method: 'POST',
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
-export const {useLoginMutation, useSignupMutation} = authSlice;
+export const {useLoginMutation, useSignupMutation,useOtpMutation} = authSlice;
 
 export default authSlice;

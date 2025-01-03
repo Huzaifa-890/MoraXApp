@@ -18,7 +18,7 @@ import {useLoginMutation} from '../../redux/authSlice/authSlice';
 import {useDispatch} from 'react-redux';
 import {authUser} from '../../redux/Features/authState';
 
-const Login = ({navigation}) => {
+const ForgotPassword = ({navigation}) => {
   const dispatch = useDispatch();
 
   const [email, setEmail] = useState('');
@@ -94,7 +94,7 @@ const Login = ({navigation}) => {
         style={{flex: 1}}>
         <ScrollView contentContainerStyle={styles.innerContainer}>
           <Animated.Image
-            source={require('../../assessts/Loginimg.png')}
+            source={require('../../assessts/MoraLOgo.png')}
             style={[
               styles.logo,
               {
@@ -104,7 +104,7 @@ const Login = ({navigation}) => {
             ]}
           />
 
-          <Text style={styles.title}>Login</Text>
+          <Text style={styles.title}>Forfot Password</Text>
 
           <Animated.View style={[styles.form, {transform: [{scale: scaleAnim}]}]}>
             <TextInput
@@ -115,41 +115,29 @@ const Login = ({navigation}) => {
               value={email}
               onChangeText={setEmail}
             />
-            <View style={styles.passwordContainer}>
-              <TextInput
-                style={styles.inputPassword}
-                placeholder="Password"
-                placeholderTextColor="#AAAAAA"
-                secureTextEntry={!showPassword}
-                value={password}
-                onChangeText={setPassword}
-              />
-              <TouchableOpacity
-                style={styles.eyeIcon}
-                onPress={() => setShowPassword(!showPassword)}>
-                <FontAwesome
-                  name={showPassword ? 'eye-slash' : 'eye'}
-                  size={24}
-                  color="#130228"
-                />
-              </TouchableOpacity>
-            </View>
+            <TextInput
+              style={styles.input}
+              placeholder="Re Enter Email"
+              placeholderTextColor="#AAAAAA"
+              keyboardType="email-address"
+              value={email}
+              onChangeText={setEmail}
+            />
+          
 
-            <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-              <Text style={styles.forgotPassword}>Forgot Password</Text>
-            </TouchableOpacity>
+        
 
             <TouchableOpacity
               style={styles.button}
-              onPress={handleLogin}
+             
               disabled={isLoading}>
-              <Text style={styles.buttonText}>{isLoading ? 'Loading...' : 'Login'}</Text>
+              <Text style={styles.buttonText}>{isLoading ? 'Loading...' : 'Send Email'}</Text>
             </TouchableOpacity>
 
             <View style={styles.signupContainer}>
-              <Text style={styles.signupText}>Don't have an account?</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('CreatAccount')}>
-                <Text style={styles.signupLink}> Sign up</Text>
+              <Text style={styles.signupText}>Remember Password?</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                <Text style={styles.signupLink}> Login</Text>
               </TouchableOpacity>
             </View>
           </Animated.View>
@@ -242,4 +230,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default ForgotPassword;
