@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {useDispatch} from 'react-redux';
-
 import colors from '../../assessts/Colors/Colors'; // Path fixed
 
 const OtpVerification = ({navigation,isLoading}) => {
@@ -22,7 +21,7 @@ const OtpVerification = ({navigation,isLoading}) => {
   const handlePress = () => {
  
     if (!isLoading) {
-      navigation.navigate('Exchange');
+      navigation.navigate('Login');
     }
   };
 

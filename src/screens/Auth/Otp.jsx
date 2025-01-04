@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -7,71 +7,75 @@ import {
   StyleSheet,
   ImageBackground,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import colors from '../../assessts/Colors/Colors';
+import { useOtpMutation } from '../../redux/authSlice/authSlice';
 
-const Otp = ({navigation}) => {
-  const [timer, setTimer] = useState(15);
-  const [otp, setOtp] = useState(['', '', '', '', '']);
-  const [otpExpired, setOtpExpired] = useState(false);
+const Otp = ({ navigation, route }) => {
+  const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
   const inputRefs = useRef([]);
-  const correctOtp = '12345'; // Dummy OTP
+  const { formData } = route.params; 
 
-  useEffect(() => {
-    if (timer > 0) {
-      const interval = setInterval(() => {
-        setTimer(prev => prev - 1);
-      }, 1000);
-      return () => clearInterval(interval);
-    }
-    if (timer === 0) {
-      setOtpExpired(true);
-    }
-  }, [timer]);
+  console.log(formData);
+  // Redux mutation for verifying OTP
+  const [verifyOtp,{isLoading}] = useOtpMutation();
 
-  const handleResendOtp = () => {
-    setTimer(15); // Reset the timer to 15 seconds
-    setOtpExpired(false); // Remove OTP expired message
-    setOtp(['', '', '', '', '']); // Clear OTP fields
-    setErrorMessage(''); // Clear error message
-    console.log('OTP Resent!');
-  };
-
+  // Handle OTP input change
   const handleOtpChange = (text, index) => {
     const newOtp = [...otp];
+    newOtp[index] = text;
+    setOtp(newOtp);
 
-    if (text === '') {
-      newOtp[index] = '';
-      setOtp(newOtp);
-
-      if (index > 0) {
-        inputRefs.current[index - 1].focus();
-      }
-    } else {
-      newOtp[index] = text;
-      setOtp(newOtp);
-
-      if (index < otp.length - 1) {
-        inputRefs.current[index + 1].focus();
-      }
+    // Automatically move focus to the next input
+    if (text && index < otp.length - 1) {
+      inputRefs.current[index + 1].focus();
+    } else if (!text && index > 0) {
+      inputRefs.current[index - 1].focus();
     }
   };
 
-  const handleOtpSubmit = () => {
-    const enteredOtp = otp.join('');
+  // Submit OTP for verification
+  const handleOtpSubmit = async () => {
+    const enteredOtp = otp.join(''); // Combine OTP digits into a single string
 
-    if (otpExpired) {
-      setErrorMessage('OTP has expired. Please resend OTP.');
+    if (enteredOtp.length !== 6) {
+      setErrorMessage('Please enter the complete 6-digit OTP.');
       return;
     }
+    setErrorMessage('');
+    setLoading(true);
 
-    if (enteredOtp === correctOtp) {
-      console.log('OTP Verified Successfully!');
-      setOtp(['', '', '', '', '']);
-      navigation.navigate('OtpVerification');
-    } else {
-      setErrorMessage('Invalid OTP. Please try again.');
+    try {
+      // Log the payload being sent
+
+      // Make the API call to verify OTP
+      const response = await verifyOtp({ email:formData.email,name:formData.name,password:formData.password, otp: enteredOtp }).unwrap();
+
+      // Log the full response
+      console.log('API Response:', response);
+
+      if (!response?.error) {
+        console.log('OTP Verified Successfully!');
+        navigation.navigate('OtpVerification'); // Navigate to the next screen
+      } else {
+        setErrorMessage(response?.message || 'Invalid OTP. Please try again.');
+        console.error('API Error (Failed):', response);
+      }
+    } catch (err) {
+      // Log detailed error information
+      console.error('Verification Error:', err);
+
+      if (err?.data) {
+        console.log('Error Data:', err.data);
+        setErrorMessage(err.data.message || 'Error verifying OTP. Please try again later.');
+      } else {
+        setErrorMessage('An unexpected error occurred. Please try again.');
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -81,21 +85,19 @@ const Otp = ({navigation}) => {
         source={require('../../assessts/Otpbg.png')}
         style={styles.container}
         resizeMode="cover">
-        <View style={styles.LogoContainer}>
+        <View style={styles.logoContainer}>
           <Image
             source={require('../../assessts/MoraLOgo.png')}
-            style={styles.Logo}
+            style={styles.logo}
           />
-
           <Text style={styles.title}>Verify your Email</Text>
         </View>
 
         <Text style={styles.description}>
-          We have sent you a one-time password on this Email Address
+          We have sent you a one-time password to this email address:
         </Text>
-        <Text style={styles.email}>example@gmail.com</Text>
+        <Text style={styles.email}>{formData.email}</Text>
 
-        {/* OTP Input */}
         <View style={styles.otpContainer}>
           {otp.map((digit, index) => (
             <TextInput
@@ -104,37 +106,25 @@ const Otp = ({navigation}) => {
               keyboardType="number-pad"
               maxLength={1}
               value={digit}
-              onChangeText={text => handleOtpChange(text, index)}
-              ref={ref => (inputRefs.current[index] = ref)}
-              onKeyPress={({nativeEvent}) => {
-                if (nativeEvent.key === 'Backspace' && digit === '') {
-                  handleOtpChange('', index);
-                }
-              }}
+              onChangeText={(text) => handleOtpChange(text, index)}
+              ref={(ref) => (inputRefs.current[index] = ref)}
             />
           ))}
         </View>
 
-        {/* Error Message */}
         {errorMessage ? (
           <Text style={styles.errorMessage}>{errorMessage}</Text>
         ) : null}
 
-        {/* Timer and Resend */}
-        {otpExpired ? (
-          <TouchableOpacity onPress={handleResendOtp} style={styles.resend}>
-            <Text style={styles.normalText}>Didn’t receive OTP? </Text>
-            <Text style={styles.resendText}>Resend OTP</Text>
-          </TouchableOpacity>
-        ) : (
-          <Text style={styles.timer}>
-            {`00:${timer < 10 ? `0${timer}` : timer}`}
-          </Text>
-        )}
-
-        {/* Submit Button */}
-        <TouchableOpacity style={styles.submitButton} onPress={handleOtpSubmit}>
-          <Text style={styles.submitText}>Submit</Text>
+        <TouchableOpacity
+          style={styles.submitButton}
+          onPress={handleOtpSubmit}
+          disabled={loading}>
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.submitText}>Submit</Text>
+          )}
         </TouchableOpacity>
       </ImageBackground>
     </View>
@@ -149,11 +139,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
   },
+  logoContainer: {
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  logo: {
+    width: 300,
+    height: 300,
+    resizeMode: 'contain',
+  },
   title: {
     fontSize: 32,
     fontWeight: 'normal',
     color: colors.button,
-    marginTop: 55,
+    marginTop: 20,
     textAlign: 'center',
   },
   description: {
@@ -168,6 +167,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff',
     marginBottom: 20,
+    textAlign: 'center',
   },
   otpContainer: {
     flexDirection: 'row',
@@ -186,48 +186,23 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     margin: 10,
   },
-  timer: {
-    color: '#fff',
-    fontSize: 18,
-    marginBottom: 20,
-  },
   errorMessage: {
     color: 'red',
     fontSize: 14,
     marginBottom: 20,
+    textAlign: 'center',
   },
   submitButton: {
     backgroundColor: '#FF7F3F',
     paddingVertical: 10,
     paddingHorizontal: 130,
     borderRadius: 20,
+    alignItems: 'center',
   },
   submitText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  resend: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 10,
-    padding: 10,
-  },
-  resendText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#FF7F3F',
-    textDecorationLine: 'underline',
-  },
-  normalText: {
-    fontSize: 16,
-    color: '#fff',
-  },
-  Logo: {
-    width: 250,
-    height: 250,
-    resizeMode: 'contain',
   },
 });
 

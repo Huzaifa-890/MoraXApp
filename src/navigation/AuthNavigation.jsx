@@ -7,6 +7,7 @@ import CreatAccount from "../screens/Auth/CreatAccount";
 import Otp from "../screens/Auth/Otp";
 import Login from "../screens/Auth/Login";
 import OtpVerification from "../screens/Auth/OtpVerification";
+import ForgotPassword from "../screens/Auth/ForgotPassword";
 
 
 
@@ -57,6 +58,11 @@ const AuthNavigation = (props) => {
                     name="OtpVerification"
                     component={OtpVerification}
                     options={{ title: "OtpVerification" }}
+                />
+                <Stack.Screen
+                    name="ForgotPassword"
+                    component={ForgotPassword}
+                    options={{ title: "ForgotPassword" }}
                 />
 
             </Stack.Navigator>

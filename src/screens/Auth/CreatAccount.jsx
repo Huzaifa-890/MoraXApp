@@ -10,7 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import colors from '../../assessts/Colors/Colors'; // Correct path
+import colors from '../../assessts/Colors/Colors';
 import { useSignupMutation } from '../../redux/authSlice/authSlice';
 
 const CreateAccount = ({ navigation }) => {
@@ -76,11 +76,8 @@ const CreateAccount = ({ navigation }) => {
     try {
       const response = await signup(formData);
       if (!response?.error) {
-        // Log the created account details
-        console.log('Account created successfully:', formData);
-
         Alert.alert('Success', 'Account created successfully!');
-        navigation.navigate('Otp'); // Navigate to OTP screen
+        navigation.navigate('Otp', { formData }); // Passing form data to OTP screen
       } else {
         Alert.alert(
           'Error',
@@ -211,6 +208,7 @@ const CreateAccount = ({ navigation }) => {
     </ImageBackground>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
