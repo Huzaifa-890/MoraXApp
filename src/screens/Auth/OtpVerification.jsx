@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '30%', // Adjust the starting position
     alignItems: 'center',
+    
     zIndex: 10, // Ensure it stays above the modal
   },
   coinImage: {
