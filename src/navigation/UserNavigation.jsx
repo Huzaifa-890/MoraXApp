@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { View, Text, StyleSheet, Animated } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -208,8 +209,8 @@ const BtabNavigation = (props) => {
                 style={[styles.tabItemContainer, focused && styles.focusedTabItemContainer]}
               >
                 <View style={styles.iconWrapper}>
-                  <Ionicons
-                    name="logo-bitcoin"
+                  <FontAwesome6
+                    name="circle-dollar-to-slot"
                     size={30}
                     color={focused ? "#F0B90B" : "rgba(255, 255, 255, 0.6)"}
                   />
