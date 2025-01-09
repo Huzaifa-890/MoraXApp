@@ -4,7 +4,7 @@ import { View, Text } from 'react-native';
 const Earn = () => {
   return (
     <View>
-      <Text>My Component</Text>
+      <Text>Earn Screen</Text>
     </View>
   );
 };
