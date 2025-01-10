@@ -108,10 +108,10 @@ const BtabNavigation = (props) => {
           headerShown: false,
           tabBarStyle: {
             backgroundColor: "#504B4B80",
-            height: 90,
+            height: 85,
             position: "absolute",
             bottom: 20,
-            marginHorizontal: 10,
+            marginHorizontal: 5,
             borderRadius: 20,
             transform: [
               {
@@ -133,7 +133,7 @@ const BtabNavigation = (props) => {
                 style={[styles.tabItemContainer, focused && styles.focusedTabItemContainer]}
               >
                 <View style={styles.iconWrapper}>
-                  <Icon name="bitcoin" size={30} color={focused ? "#F0B90B" : "rgba(255, 255, 255, 0.6)"} />
+                  <Icon name="bitcoin" size={28} color={focused ? "#F0B90B" : "rgba(255, 255, 255, 0.6)"} />
                 </View>
                 <Text style={focused ? styles.focusedText : styles.unfocusedText}>Exchange</Text>
               </View>
@@ -151,7 +151,7 @@ const BtabNavigation = (props) => {
                 style={[styles.tabItemContainer, focused && styles.focusedTabItemContainer]}
               >
                 <View style={styles.iconWrapper}>
-                  <Icon name="hammer-sickle" size={30} color={focused ? "#F0B90B" : "rgba(255, 255, 255, 0.6)"} />
+                  <Icon name="hammer-sickle" size={28} color={focused ? "#F0B90B" : "rgba(255, 255, 255, 0.6)"} />
                 </View>
                 <Text style={focused ? styles.focusedText : styles.unfocusedText}>Mine</Text>
               </View>
@@ -171,7 +171,7 @@ const BtabNavigation = (props) => {
                 <View style={styles.iconWrapper}>
                   <FontAwesome5
                     name="users"
-                    size={30}
+                    size={28}
                     color={focused ? "#F0B90B" : "rgba(255, 255, 255, 0.6)"}
                   />
                 </View>
@@ -191,7 +191,7 @@ const BtabNavigation = (props) => {
                 style={[styles.tabItemContainer, focused && styles.focusedTabItemContainer]}
               >
                 <View style={styles.iconWrapper}>
-                  <FontAwesome5 name="coins" size={30} color={focused ? "#F0B90B" : "rgba(255, 255, 255, 0.6)"} />
+                  <FontAwesome5 name="coins" size={28} color={focused ? "#F0B90B" : "rgba(255, 255, 255, 0.6)"} />
                 </View>
                 <Text style={focused ? styles.focusedText : styles.unfocusedText}>Earn</Text>
               </View>
@@ -211,7 +211,7 @@ const BtabNavigation = (props) => {
                 <View style={styles.iconWrapper}>
                   <FontAwesome6
                     name="circle-dollar-to-slot"
-                    size={30}
+                    size={26}
                     color={focused ? "#F0B90B" : "rgba(255, 255, 255, 0.6)"}
                   />
                 </View>
@@ -243,6 +243,8 @@ const styles = StyleSheet.create({
   },
   focusedTabItemContainer: {
     backgroundColor: "#2E1435",
+    borderRadius: 10,
+
   },
   iconWrapper: {
     alignItems: "center",

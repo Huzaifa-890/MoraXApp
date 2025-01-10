@@ -23,12 +23,12 @@ const styles = StyleSheet.create({
     padding: 16, // Adds padding around the content]
    width:windowWidth,
    height:windowHeight,
-
+color:'white',
   },
   title: {
     fontSize: 24, // Larger font size for emphasis
     fontWeight: 'bold', // Bold text for the title
-    color: '#333', // Dark text color for contrast
+    color: 'white', // Dark text color for contrast
     textAlign: 'center', // Centers the text
   },
 });
