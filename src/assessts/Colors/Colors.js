@@ -24,6 +24,8 @@ const colors = {
     profitPerHour: '#84CB69',
     primaryTasks: '#272F3E',
     inviteReferral: '#5E5A91',
- };
 
- export default colors;
+    borderColor: '#F9D838'
+};
+
+export default colors;

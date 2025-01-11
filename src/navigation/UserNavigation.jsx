@@ -1,18 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
-import { View, Text, StyleSheet, Animated } from "react-native";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import Exchange from "../screens/User/Exchange";
-import Mine from "../screens/User/Mine";
-import Friends from "../screens/User/Friends";
-import Settings from "../screens/User/Settings";
-import Earn from "../screens/User/Earn";
-import Airdrop from "../screens/User/Airdrop";
+import React, {useEffect, useRef, useState} from 'react';
+import {View, Text, StyleSheet, Animated} from 'react-native';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import Exchange from '../screens/User/Exchange';
+import Mine from '../screens/User/Mine';
+import Friends from '../screens/User/Friends';
+import Settings from '../screens/User/Settings';
+import Earn from '../screens/User/Earn';
+import Airdrop from '../screens/User/Airdrop';
 
 const ExchangeStack = createStackNavigator();
 const MineStack = createStackNavigator();
@@ -24,7 +24,16 @@ const AirdropStack = createStackNavigator();
 function ExchangeTab() {
   return (
     <ExchangeStack.Navigator initialRouteName="Exchange">
-      <ExchangeStack.Screen name="Exchange" component={Exchange} options={{ headerShown: false }} />
+      <ExchangeStack.Screen
+        name="Exchange"
+        component={Exchange}
+        options={{headerShown: false}}
+      />
+      <ExchangeStack.Screen
+        name="Settings"
+        component={Settings}
+        options={{headerShown: false}}
+      />
     </ExchangeStack.Navigator>
   );
 }
@@ -32,7 +41,11 @@ function ExchangeTab() {
 function MineTab() {
   return (
     <MineStack.Navigator initialRouteName="Mine">
-      <MineStack.Screen name="Mine" component={Mine} options={{ headerShown: false }} />
+      <MineStack.Screen
+        name="Mine"
+        component={Mine}
+        options={{headerShown: false}}
+      />
     </MineStack.Navigator>
   );
 }
@@ -40,7 +53,11 @@ function MineTab() {
 function FriendsTab() {
   return (
     <FriendsStack.Navigator initialRouteName="Friends">
-      <FriendsStack.Screen name="Friends" component={Friends} options={{ headerShown: false }} />
+      <FriendsStack.Screen
+        name="Friends"
+        component={Friends}
+        options={{headerShown: false}}
+      />
     </FriendsStack.Navigator>
   );
 }
@@ -48,7 +65,11 @@ function FriendsTab() {
 function SettingTab() {
   return (
     <SettingStack.Navigator initialRouteName="Setting">
-      <SettingStack.Screen name="Setting" component={Settings} options={{ headerShown: false }} />
+      <SettingStack.Screen
+        name="Setting"
+        component={Settings}
+        options={{headerShown: false}}
+      />
     </SettingStack.Navigator>
   );
 }
@@ -56,19 +77,27 @@ function SettingTab() {
 function EarnTab() {
   return (
     <EarnStack.Navigator initialRouteName="Earn">
-      <EarnStack.Screen name="Earn" component={Earn} options={{ headerShown: false }} />
+      <EarnStack.Screen
+        name="Earn"
+        component={Earn}
+        options={{headerShown: false}}
+      />
     </EarnStack.Navigator>
   );
 }
 function AirdropTab() {
   return (
     <AirdropStack.Navigator initialRouteName="Airdrop">
-      <EarnStack.Screen name="Airdrop" component={Airdrop} options={{ headerShown: false }} />
+      <EarnStack.Screen
+        name="Airdrop"
+        component={Airdrop}
+        options={{headerShown: false}}
+      />
     </AirdropStack.Navigator>
   );
 }
 
-const BtabNavigation = (props) => {
+const BtabNavigation = props => {
   const Tab = createBottomTabNavigator();
   const [screenName, setScreenName] = useState();
   const routeNameRef = useRef();
@@ -90,7 +119,9 @@ const BtabNavigation = (props) => {
     <NavigationContainer
       style={styles.NavigationContainer}
       ref={navigationRef}
-      onReady={() => (routeNameRef.current = navigationRef.current.getCurrentRoute().name)}
+      onReady={() =>
+        (routeNameRef.current = navigationRef.current.getCurrentRoute().name)
+      }
       onStateChange={() => {
         const previousRouteName = routeNameRef.current;
         const currentRouteName = navigationRef.current.getCurrentRoute().name;
@@ -100,16 +131,15 @@ const BtabNavigation = (props) => {
         }
 
         routeNameRef.current = currentRouteName;
-      }}
-    >
+      }}>
       <Tab.Navigator
         initialRouteName={props.initRoute}
         screenOptions={{
           headerShown: false,
           tabBarStyle: {
-            backgroundColor: "#504B4B80",
+            backgroundColor: '#504B4B80',
             height: 85,
-            position: "absolute",
+            position: 'absolute',
             bottom: 20,
             marginHorizontal: 5,
             borderRadius: 20,
@@ -122,20 +152,28 @@ const BtabNavigation = (props) => {
               },
             ],
           },
-        }}
-      >
+        }}>
         <Tab.Screen
           name="ExchangeTab"
           component={ExchangeTab}
           options={{
-            tabBarIcon: ({ focused }) => (
+            tabBarIcon: ({focused}) => (
               <View
-                style={[styles.tabItemContainer, focused && styles.focusedTabItemContainer]}
-              >
+                style={[
+                  styles.tabItemContainer,
+                  focused && styles.focusedTabItemContainer,
+                ]}>
                 <View style={styles.iconWrapper}>
-                  <Icon name="bitcoin" size={28} color={focused ? "#F0B90B" : "rgba(255, 255, 255, 0.6)"} />
+                  <Icon
+                    name="bitcoin"
+                    size={28}
+                    color={focused ? '#F0B90B' : 'rgba(255, 255, 255, 0.6)'}
+                  />
                 </View>
-                <Text style={focused ? styles.focusedText : styles.unfocusedText}>Exchange</Text>
+                <Text
+                  style={focused ? styles.focusedText : styles.unfocusedText}>
+                  Exchange
+                </Text>
               </View>
             ),
             tabBarLabel: () => null,
@@ -146,14 +184,23 @@ const BtabNavigation = (props) => {
           name="Mine"
           component={MineTab}
           options={{
-            tabBarIcon: ({ focused }) => (
+            tabBarIcon: ({focused}) => (
               <View
-                style={[styles.tabItemContainer, focused && styles.focusedTabItemContainer]}
-              >
+                style={[
+                  styles.tabItemContainer,
+                  focused && styles.focusedTabItemContainer,
+                ]}>
                 <View style={styles.iconWrapper}>
-                  <Icon name="hammer-sickle" size={28} color={focused ? "#F0B90B" : "rgba(255, 255, 255, 0.6)"} />
+                  <Icon
+                    name="hammer-sickle"
+                    size={28}
+                    color={focused ? '#F0B90B' : 'rgba(255, 255, 255, 0.6)'}
+                  />
                 </View>
-                <Text style={focused ? styles.focusedText : styles.unfocusedText}>Mine</Text>
+                <Text
+                  style={focused ? styles.focusedText : styles.unfocusedText}>
+                  Mine
+                </Text>
               </View>
             ),
             tabBarLabel: () => null,
@@ -164,18 +211,23 @@ const BtabNavigation = (props) => {
           name="Friends"
           component={FriendsTab}
           options={{
-            tabBarIcon: ({ focused }) => (
+            tabBarIcon: ({focused}) => (
               <View
-                style={[styles.tabItemContainer, focused && styles.focusedTabItemContainer]}
-              >
+                style={[
+                  styles.tabItemContainer,
+                  focused && styles.focusedTabItemContainer,
+                ]}>
                 <View style={styles.iconWrapper}>
                   <FontAwesome5
                     name="users"
                     size={28}
-                    color={focused ? "#F0B90B" : "rgba(255, 255, 255, 0.6)"}
+                    color={focused ? '#F0B90B' : 'rgba(255, 255, 255, 0.6)'}
                   />
                 </View>
-                <Text style={focused ? styles.focusedText : styles.unfocusedText}>Friends</Text>
+                <Text
+                  style={focused ? styles.focusedText : styles.unfocusedText}>
+                  Friends
+                </Text>
               </View>
             ),
             tabBarLabel: () => null,
@@ -186,14 +238,23 @@ const BtabNavigation = (props) => {
           name="EarnTab"
           component={EarnTab}
           options={{
-            tabBarIcon: ({ focused }) => (
+            tabBarIcon: ({focused}) => (
               <View
-                style={[styles.tabItemContainer, focused && styles.focusedTabItemContainer]}
-              >
+                style={[
+                  styles.tabItemContainer,
+                  focused && styles.focusedTabItemContainer,
+                ]}>
                 <View style={styles.iconWrapper}>
-                  <FontAwesome5 name="coins" size={28} color={focused ? "#F0B90B" : "rgba(255, 255, 255, 0.6)"} />
+                  <FontAwesome5
+                    name="coins"
+                    size={28}
+                    color={focused ? '#F0B90B' : 'rgba(255, 255, 255, 0.6)'}
+                  />
                 </View>
-                <Text style={focused ? styles.focusedText : styles.unfocusedText}>Earn</Text>
+                <Text
+                  style={focused ? styles.focusedText : styles.unfocusedText}>
+                  Earn
+                </Text>
               </View>
             ),
             tabBarLabel: () => null,
@@ -204,18 +265,23 @@ const BtabNavigation = (props) => {
           name="AirdropTab"
           component={AirdropTab}
           options={{
-            tabBarIcon: ({ focused }) => (
+            tabBarIcon: ({focused}) => (
               <View
-                style={[styles.tabItemContainer, focused && styles.focusedTabItemContainer]}
-              >
+                style={[
+                  styles.tabItemContainer,
+                  focused && styles.focusedTabItemContainer,
+                ]}>
                 <View style={styles.iconWrapper}>
                   <FontAwesome6
                     name="circle-dollar-to-slot"
                     size={26}
-                    color={focused ? "#F0B90B" : "rgba(255, 255, 255, 0.6)"}
+                    color={focused ? '#F0B90B' : 'rgba(255, 255, 255, 0.6)'}
                   />
                 </View>
-                <Text style={focused ? styles.focusedText : styles.unfocusedText}>Airdrop</Text>
+                <Text
+                  style={focused ? styles.focusedText : styles.unfocusedText}>
+                  Airdrop
+                </Text>
               </View>
             ),
             tabBarLabel: () => null,
@@ -230,34 +296,33 @@ export default BtabNavigation;
 
 const styles = StyleSheet.create({
   NavigationContainer: {
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
   },
   tabItemContainer: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     width: 70,
     height: 70,
     borderRadius: 10,
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     marginTop: 50,
   },
   focusedTabItemContainer: {
-    backgroundColor: "#2E1435",
+    backgroundColor: '#2E1435',
     borderRadius: 10,
-
   },
   iconWrapper: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   focusedText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 14,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginTop: 6,
   },
   unfocusedText: {
-    color: "rgba(255, 255, 255, 0.6)",
+    color: 'rgba(255, 255, 255, 0.6)',
     fontSize: 12,
     marginTop: 8,
   },
