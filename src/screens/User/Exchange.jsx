@@ -6,40 +6,20 @@ import {
   View,
   Image,
   Animated,
-  KeyboardAvoidingView,
 } from 'react-native';
 import UserLayout from '../../Layout/UserLayout';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Exchange = () => {
   const boxData = [
-    {
-      id: 1,
-      title: 'Earn per tap',
-      value: 12000,
-      coinValue: true,
-      titleColor: '#FF9400',
-    },
-    {
-      id: 2,
-      title: 'Coins to level up',
-      value: 10000000,
-      coinValue: false,
-      titleColor: '#5B73F2',
-    },
-    {
-      id: 3,
-      title: 'Profit per hour',
-      value: 636310,
-      coinValue: true,
-      titleColor: '#00FF3C',
-    },
+    { id: 1, title: 'Earn per tap', value: 12000, coinValue: true, titleColor: '#FF9400' },
+    { id: 2, title: 'Coins to level up', value: 10000000, coinValue: false, titleColor: '#5B73F2' },
+    { id: 3, title: 'Profit per hour', value: 636310, coinValue: true, titleColor: '#00FF3C' },
   ];
 
   const formatValue = (value) => {
-    if (value >= 1000) {
-      return `${(value / 1000).toFixed(1)}k`;
-    }
+    if (value >= 1000) return `${(value / 1000).toFixed(1)}k`;
     return value.toString();
   };
 
@@ -59,7 +39,7 @@ const Exchange = () => {
       }).start();
 
       return () => {
-        animatedValue.removeListener(listener);
+        animatedValue.removeAllListeners();
       };
     }, [endValue]);
 
@@ -81,14 +61,17 @@ const Exchange = () => {
     </View>
   );
 
-  const ProgressBar = ({ currentLevel, maxLevel }) => {
-    const progressPercentage = (currentLevel / maxLevel) * 100;
+  const ProgressBar = ({ currentLevel = 6, maxLevel = 10 }) => {
+    const progressPercentage = (currentLevel / maxLevel) * 30;
 
     return (
       <View style={styles.progressContainer}>
         <Text style={styles.progressLabel}>Epic</Text>
         <View style={styles.progressBar}>
-          <View
+          <LinearGradient
+            colors={['#b3ffab', '#4a4fff']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
             style={[styles.progressFill, { width: `${progressPercentage}%` }]}
           />
         </View>
@@ -99,45 +82,47 @@ const Exchange = () => {
 
   return (
     <UserLayout>
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <View style={styles.boxContainer}>
-            {boxData.map((box) => (
-              <InfoBox
-                key={box.id}
-                title={box.title}
-                value={box.value}
-                coinValue={box.coinValue}
-                titleColor={box.titleColor}
-              />
-            ))}
-          </View>
-
-          <View style={styles.coinDisplay}>
-            <Image
-              source={require('../../assessts/ExchangeScreen/MediumIcon.png')}
-              style={styles.coinIcon}
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.boxContainer}>
+          {boxData.map((box) => (
+            <InfoBox
+              key={box.id}
+              title={box.title}
+              value={box.value}
+              coinValue={box.coinValue}
+              titleColor={box.titleColor}
             />
-            <Text style={styles.coinText}>507,981</Text>
-          </View>
+          ))}
+        </View>
 
-          <ProgressBar currentLevel={6} maxLevel={10} />
-
+        <View style={styles.coinDisplay}>
           <Image
-            source={require('../../assessts/ExchangeScreen/BigIcon.png')}
-            style={styles.largeCoin}
+            source={require('../../assessts/ExchangeScreen/MediumIcon.png')}
+            style={styles.coinIcon}
           />
+          <Text style={styles.coinText}>507,981</Text>
+        </View>
 
-          {/* New Section */}
-          <View style={styles.boostSection}>
+        <ProgressBar currentLevel={6} maxLevel={10} />
+
+        <Image
+          source={require('../../assessts/ExchangeScreen/BigIcon.png')}
+          style={styles.largeCoin}
+        />
+
+        <View style={styles.boostSection}>
           <View style={styles.boostLeft}>
-            <Ionicons name="flash" size={35} color="#FF9400" style={styles.boostIcon} />
+            <Ionicons
+              name="flash"
+              size={35}
+              color="#FF9400"
+              style={styles.boostIcon}
+            />
             <Text style={styles.boostText}>6500 / 6500</Text>
           </View>
           <Text style={styles.boostButton}>Boost</Text>
         </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+      </ScrollView>
     </UserLayout>
   );
 };
@@ -189,10 +174,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 10,
   },
-  largeIcon: {
-    width: 80,
-    height: 80,
-    marginBottom: 8,
+  coinIcon: {
+    width: 75,
+    height: 75,
+  },
+  coinText: {
+    color: '#FFFFFF',
+    fontSize: 45,
+    fontWeight: 'bold',
+    marginTop: 15,
+  },
+  largeCoin: {
+    width: 250,
+    height: 250,
     resizeMode: 'contain',
   },
   progressContainer: {
@@ -222,41 +216,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     alignSelf: 'flex-end',
   },
-  largeCoin: {
-    width: 250,
-    height: 250,
-    resizeMode: 'contain',
-  },
-  coinIcon: {
-    width: 75,
-    height: 75,
-  },
-  coinText: {
-    color: '#FFFFFF',
-    fontSize: 45,
-    fontWeight: 'bold',
-    justifyContent: 'center',
-    marginTop: 15,
-  },
   boostSection: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-
     borderRadius: 12,
-   
-    
     marginTop: 16,
     width: '90%',
   },
   boostLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  boostIcon: {
-    width: 24,
-    height: 24,
-    marginRight: 8,
   },
   boostText: {
     color: 'white',
@@ -267,9 +237,5 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: '600',
-  },
-
-  boostIcon: {
-    marginRight: 10,
   },
 });
