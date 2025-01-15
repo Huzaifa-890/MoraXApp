@@ -11,7 +11,17 @@ import {
 import UserLayout from '../../Layout/UserLayout';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+const TabButton = ({ title, active, onPress }) => (
+  <TouchableOpacity
+    style={[styles.tabButton, active && styles.activeTabButton]}
+    onPress={onPress}
+  >
+    <Text style={[styles.tabText, active && styles.activeTabText]}>{title}</Text>
+  </TouchableOpacity>
+);
+
 const Mine = () => {
+  const [activeTab, setActiveTab] = useState('Markets'); // Default tab
   const boxData = [
     { id: 1, title: 'Earn per tap', value: 12000, coinValue: true, titleColor: '#FF9400' },
     { id: 2, title: 'Coins to level up', value: 10000000, coinValue: false, titleColor: '#5B73F2' },
@@ -46,9 +56,8 @@ const Mine = () => {
     return <Text style={styles.boxValue}>{formatValue(displayValue)}</Text>;
   };
 
-  // Countdown Timer Component
   const CountdownTimer = ({ initialTime }) => {
-    const [time, setTime] = useState(initialTime); // Initial time in seconds
+    const [time, setTime] = useState(initialTime);
 
     useEffect(() => {
       const interval = setInterval(() => {
@@ -57,7 +66,7 @@ const Mine = () => {
         }
       }, 1000);
 
-      return () => clearInterval(interval); // Clear interval on component unmount
+      return () => clearInterval(interval);
     }, [time]);
 
     const formatTime = (seconds) => {
@@ -93,6 +102,21 @@ const Mine = () => {
     </View>
   );
 
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'Markets':
+        return <Text style={styles.tabContentText}>Markets content goes here...</Text>;
+      case 'PR&Team':
+        return <Text style={styles.tabContentText}>PR & Team content goes here...</Text>;
+      case 'Legal':
+        return <Text style={styles.tabContentText}>Legal content goes here...</Text>;
+      case 'Specials':
+        return <Text style={styles.tabContentText}>Specials content goes here...</Text>;
+      default:
+        return null;
+    }
+  };
+
   return (
     <UserLayout>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -107,7 +131,6 @@ const Mine = () => {
             />
           ))}
         </View>
-
         <View style={styles.coinDisplay}>
           <Image
             source={require('../../assessts/ExchangeScreen/MediumIcon.png')}
@@ -115,12 +138,9 @@ const Mine = () => {
           />
           <Text style={styles.coinText}>507,981</Text>
         </View>
-
-        <CountdownTimer initialTime={9000} /> {/* Countdown Timer */}
-
+        <CountdownTimer initialTime={9000} />
         <View style={styles.dailyComboContainer}>
           <View style={styles.dailyComboHeader}>
-
             <Text style={styles.dailyComboText}>Daily combo</Text>
             <View style={styles.rewardContainer}>
               <Image
@@ -155,6 +175,19 @@ const Mine = () => {
             </View>
           </View>
         </View>
+
+        {/* Tabs Section */}
+        <View style={styles.tabsContainer}>
+          {['Markets', 'PR&Team', 'Legal', 'Specials'].map((tab) => (
+            <TabButton
+              key={tab}
+              title={tab}
+              active={activeTab === tab}
+              onPress={() => setActiveTab(tab)}
+            />
+          ))}
+        </View>
+        <View style={styles.tabContentContainer}>{renderTabContent()}</View>
       </ScrollView>
     </UserLayout>
   );
@@ -171,7 +204,6 @@ const styles = StyleSheet.create({
   dailyComboContainer: {
     width: '90%',
     marginBottom: 16,
-    
   },
   dailyComboHeader: {
     flexDirection: 'row',
@@ -227,6 +259,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     paddingHorizontal: 16,
+    flexWrap: 'wrap',
   },
   box: {
     flexBasis: '32%',
@@ -234,6 +267,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 8,
     alignItems: 'center',
+    marginVertical: 10,
   },
   boxTitle: {
     fontSize: 12,
@@ -274,11 +308,9 @@ const styles = StyleSheet.create({
   timerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  
     paddingVertical: 10,
     borderRadius: 12,
     width: '90%',
-  
   },
   timerText: {
     color: 'white',
@@ -288,5 +320,41 @@ const styles = StyleSheet.create({
   infoButton: {
     padding: 8,
     borderRadius: 12,
+  },
+  tabsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    backgroundColor: '#2C2549',
+    padding: 10,
+    borderRadius: 10,
+    marginTop: 16,
+    width: '90%',
+  },
+  tabButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+  },
+  activeTabButton: {
+    backgroundColor: '#5B73F2',
+  },
+  tabText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+  },
+  activeTabText: {
+    fontWeight: 'bold',
+  },
+  tabContentContainer: {
+    marginTop: 16,
+    padding: 10,
+    width: '90%',
+    backgroundColor: '#2C2549',
+    borderRadius: 10,
+  },
+  tabContentText: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
