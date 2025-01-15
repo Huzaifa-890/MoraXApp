@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import UserLayout from '../../Layout/UserLayout';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import colors from '../../assessts/Colors/Colors';
 
 const TabButton = ({ title, active, onPress }) => (
   <TouchableOpacity
@@ -35,7 +36,7 @@ const Mine = () => {
 
   const AnimatedCounter = ({ endValue }) => {
     const animatedValue = useRef(new Animated.Value(0)).current;
-    const [displayValue, setDisplayValue] = useState(0);
+    const [displayValue, setDisplayValue] = useState(endValue);
 
     useEffect(() => {
       const listener = animatedValue.addListener(({ value }) =>
@@ -46,11 +47,11 @@ const Mine = () => {
         toValue: endValue,
         duration: 2000,
         useNativeDriver: false,
-      }).start();
-
-      return () => {
+      }).start(() => {
         animatedValue.removeAllListeners();
-      };
+      });
+
+      return () => animatedValue.removeAllListeners();
     }, [endValue]);
 
     return <Text style={styles.boxValue}>{formatValue(displayValue)}</Text>;
@@ -201,59 +202,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
   },
-  dailyComboContainer: {
-    width: '90%',
-    marginBottom: 16,
-  },
-  dailyComboHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-    backgroundColor: '#2C2549',
-    padding: 8,
-    borderRadius: 4,
-  },
-  dailyComboText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  rewardContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  dailyCoinIcon: {
-    width: 20,
-    height: 20,
-    marginRight: 4,
-  },
-  rewardText: {
-    color: '#FFFFFF',
-    fontSize: 14,
-    marginRight: 4,
-  },
-  cardContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  card: {
-    backgroundColor: '#2C2549',
-    borderRadius: 10,
-    alignItems: 'center',
-    padding: 8,
-    width: '30%',
-  },
-  cardImage: {
-    width: 40,
-    height: 40,
-    marginBottom: 8,
-  },
-  cardText: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    textAlign: 'center',
-  },
   boxContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -321,6 +269,59 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 12,
   },
+  dailyComboContainer: {
+    width: '90%',
+    marginBottom: 16,
+  },
+  dailyComboHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+    backgroundColor: '#2C2549',
+    padding: 8,
+    borderRadius: 4,
+  },
+  dailyComboText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  rewardContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dailyCoinIcon: {
+    width: 20,
+    height: 20,
+    marginRight: 4,
+  },
+  rewardText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    marginRight: 4,
+  },
+  cardContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  card: {
+    backgroundColor: '#2C2549',
+    borderRadius: 10,
+    alignItems: 'center',
+    padding: 8,
+    width: '30%',
+  },
+  cardImage: {
+    width: 40,
+    height: 40,
+    marginBottom: 8,
+  },
+  cardText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    textAlign: 'center',
+  },
   tabsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -336,7 +337,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   activeTabButton: {
-    backgroundColor: '#5B73F2',
+    backgroundColor: colors.PrimaryColor,
   },
   tabText: {
     color: '#FFFFFF',
