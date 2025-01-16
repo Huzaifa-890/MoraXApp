@@ -29,6 +29,7 @@ function ExchangeTab() {
         component={Exchange}
         options={{headerShown: false}}
       />
+      
       <ExchangeStack.Screen
         name="Settings"
         component={Settings}
@@ -44,6 +45,11 @@ function MineTab() {
       <MineStack.Screen
         name="Mine"
         component={Mine}
+        options={{headerShown: false}}
+      />
+      <ExchangeStack.Screen
+        name="Settings"
+        component={Settings}
         options={{headerShown: false}}
       />
     </MineStack.Navigator>

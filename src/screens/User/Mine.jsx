@@ -82,7 +82,7 @@ const Mine = () => {
       <View style={styles.timerContainer}>
         <Text style={styles.timerText}>{formatTime(time)}</Text>
         <TouchableOpacity style={styles.infoButton}>
-          <Ionicons name="information-circle-outline" size={24} color="white" />
+          <Ionicons name="information-circle-outline" size={16} color="white" />
         </TouchableOpacity>
       </View>
     );
@@ -262,11 +262,11 @@ const styles = StyleSheet.create({
   },
   timerText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
   },
   infoButton: {
-    padding: 8,
+    padding: 4,
     borderRadius: 12,
   },
   dailyComboContainer: {
@@ -359,3 +359,271 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+
+// tabs In Progress Here
+// import React, { useState } from 'react';
+// import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
+
+// const App = () => {
+//   const [activeTab, setActiveTab] = useState('Markets');
+
+//   const TABS = ['Markets', 'PR&Team', 'Legal', 'Specials'];
+
+//   const renderContent = () => {
+//     switch (activeTab) {
+//       case 'Markets':
+//         return (
+//           <FlatList
+//             data={marketData}
+//             keyExtractor={(item, index) => index.toString()}
+//             renderItem={({ item }) => <Card {...item} />}
+//             numColumns={2}
+//             columnWrapperStyle={styles.row}
+//           />
+//         );
+//       case 'PR&Team':
+//         return (
+//           <FlatList
+//             data={prTeamData}
+//             keyExtractor={(item, index) => index.toString()}
+//             renderItem={({ item }) => <Card {...item} />}
+//             numColumns={2}
+//             columnWrapperStyle={styles.row}
+//           />
+//         );
+//       case 'Legal':
+//         return (
+//           <FlatList
+//             data={legalData}
+//             keyExtractor={(item, index) => index.toString()}
+//             renderItem={({ item }) => <Card {...item} />}
+//             numColumns={2}
+//             columnWrapperStyle={styles.row}
+//           />
+//         );
+//       case 'Specials':
+//         return (
+//           <FlatList
+//             data={specialsData}
+//             keyExtractor={(item, index) => index.toString()}
+//             renderItem={({ item }) => <Card {...item} />}
+//             numColumns={2}
+//             columnWrapperStyle={styles.row}
+//           />
+//         );
+//       default:
+//         return null;
+//     }
+//   };
+
+//   const Card = ({ icon, title, profitPerHour, level, totalProfit, multiplier }) => (
+//     <View style={styles.card}>
+//       {/* Multiplier */}
+//       {multiplier && (
+//         <Text style={[styles.multiplier, { color: multiplier.color }]}>
+//           {multiplier.text}
+//         </Text>
+//       )}
+
+//       {/* Icon and Title */}
+//       <View style={styles.cardHeader}>
+//         <Image source={icon} style={styles.icon} />
+//         <Text style={styles.cardTitle}>{title}</Text>
+//       </View>
+
+//       {/* Profit Per Hour */}
+//       <Text style={styles.profitText}>Profit per hour:</Text>
+//       <View style={styles.profitRow}>
+//         <Image source={require('../../assessts/ExchangeScreen/MediumIcon.png')} style={styles.coinIcon} />
+//         <Text style={styles.profitValue}>{profitPerHour}</Text>
+//       </View>
+
+//       {/* Footer */}
+//       <View style={styles.cardFooter}>
+//         <Text style={styles.level}>lvl {level}</Text>
+//         <View style={styles.footerProfit}>
+//           <Image source={require('../../assessts/ExchangeScreen/MediumIcon.png')} style={styles.coinIcon} />
+//           <Text style={styles.totalProfit}>{totalProfit}</Text>
+//         </View>
+//       </View>
+//     </View>
+//   );
+
+//   const marketData = [
+//     {
+//       icon: require('../../assessts/ExchangeScreen/MediumIcon.png'),
+//       title: 'Top 10 cmc pairs',
+//       profitPerHour: '1.61K',
+//       level: '13',
+//       totalProfit: '156.92K',
+//     },
+//     {
+//       icon: require('../../assessts/ExchangeScreen/MediumIcon.png'),
+//       title: 'Meme coins',
+//       profitPerHour: '2.2K',
+//       level: '13',
+//       totalProfit: '312.2K',
+//     },
+//     {
+//       icon: require('../../assessts/ExchangeScreen/MediumIcon.png'),
+//       title: 'Margin trading x10',
+//       profitPerHour: '5.5K',
+//       level: '13',
+//       totalProfit: '313.92K',
+//       multiplier: { text: 'x10', color: '#FF5733' },
+//     },
+//   ];
+
+//   const prTeamData = [
+//     {
+//       icon: require('../../assessts/ExchangeScreen/MediumIcon.png'),
+//       title: 'PR Campaigns',
+//       profitPerHour: '3.2K',
+//       level: '15',
+//       totalProfit: '256.5K',
+//     },
+//   ];
+
+//   const legalData = [
+//     {
+//       icon: require('../../assessts/ExchangeScreen/MediumIcon.png'),
+//       title: 'Legal Documents',
+//       profitPerHour: '2.1K',
+//       level: '12',
+//       totalProfit: '120.9K',
+//     },
+//   ];
+
+//   const specialsData = [
+//     {
+//       icon: require('../../assessts/ExchangeScreen/MediumIcon.png'),
+//       title: 'Special Offers',
+//       profitPerHour: '7.0K',
+//       level: '18',
+//       totalProfit: '520.3K',
+//     },
+//   ];
+
+//   return (
+//     <View style={styles.container}>
+//       {/* Tabs */}
+//       <View style={styles.tabContainer}>
+//         {TABS.map((tab) => (
+//           <TouchableOpacity
+//             key={tab}
+//             style={[styles.tab, activeTab === tab && styles.activeTab]}
+//             onPress={() => setActiveTab(tab)}
+//           >
+//             <Text style={[styles.tabText, activeTab === tab && styles.activeTabText]}>{tab}</Text>
+//           </TouchableOpacity>
+//         ))}
+//       </View>
+
+//       {/* Content */}
+//       <View style={styles.content}>{renderContent()}</View>
+//     </View>
+//   );
+// };
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#1a1035',
+//     padding: 16,
+//   },
+//   tabContainer: {
+//     flexDirection: 'row',
+//     marginBottom: 16,
+//     backgroundColor: '#2a1b5b',
+//     borderRadius: 8,
+//   },
+//   tab: {
+//     flex: 1,
+//     paddingVertical: 12,
+//     alignItems: 'center',
+//   },
+//   activeTab: {
+//     backgroundColor: '#512da8',
+//     borderRadius: 8,
+//   },
+//   tabText: {
+//     color: '#ffffff',
+//     fontSize: 16,
+//   },
+//   activeTabText: {
+//     fontWeight: 'bold',
+//   },
+//   content: {
+//     flex: 1,
+//   },
+//   row: {
+//     justifyContent: 'space-between',
+//   },
+//   card: {
+//     backgroundColor: '#2a1b5b',
+//     padding: 16,
+//     borderRadius: 12,
+//     marginBottom: 16,
+//     width: '48%',
+//   },
+//   cardHeader: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     marginBottom: 12,
+//   },
+//   icon: {
+//     width: 32,
+//     height: 32,
+//     marginRight: 8,
+//   },
+//   cardTitle: {
+//     fontSize: 16,
+//     color: '#ffffff',
+//     fontWeight: 'bold',
+//   },
+//   multiplier: {
+//     fontSize: 20,
+//     fontWeight: 'bold',
+//     marginBottom: 4,
+//   },
+//   profitText: {
+//     fontSize: 14,
+//     color: '#aaaaaa',
+//     marginBottom: 4,
+//   },
+//   profitRow: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     marginBottom: 16,
+//   },
+//   coinIcon: {
+//     width: 16,
+//     height: 16,
+//     marginRight: 4,
+//   },
+//   profitValue: {
+//     fontSize: 14,
+//     color: '#ffcc00',
+//   },
+//   cardFooter: {
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//     alignItems: 'center',
+//   },
+//   level: {
+//     fontSize: 14,
+//     color: '#aaaaaa',
+//   },
+//   footerProfit: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//   },
+//   totalProfit: {
+//     fontSize: 14,
+//     color: '#ffcc00',
+//     marginLeft: 4,
+//   },
+// });
+
+// export default App;
