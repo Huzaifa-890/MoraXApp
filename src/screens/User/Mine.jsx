@@ -195,7 +195,10 @@ const Mine = () => {
 
   return (
     <UserLayout>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}
+      >
+
+
         <View style={styles.boxContainer}>
           {boxData.map((box) => (
             <InfoBox
@@ -399,9 +402,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     backgroundColor: '#2C2549',
-    padding: 10,
+    padding: 6,
     borderRadius: 10,
-    marginTop: 16,
+    // marginTop: 16,
     width: '90%',
   },
   tabButton: {
@@ -420,10 +423,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   tabContentContainer: {
-    marginTop: 16,
-    padding: 10,
+    marginTop: 10,
+    
     width: '90%',
-    backgroundColor: '#2C2549',
+    
     borderRadius: 10,
   },
   tabContentText: {
@@ -434,7 +437,7 @@ const styles = StyleSheet.create({
  container: {
     flex: 1,
     backgroundColor: '#1a1035', // Main background color
-    padding: 16,
+    padding: 10,
   },
   tabContainer: {
     flexDirection: 'row',
@@ -466,7 +469,7 @@ const styles = StyleSheet.create({
   },
   row: {
     justifyContent: 'space-between',
-    marginBottom: 16,
+    marginBottom: 0,
   },
   card: {
     backgroundColor: '#2e244c', // Card background color
